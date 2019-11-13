@@ -246,6 +246,11 @@ long long memtoll(const char *p, int *err) {
     return val*mul;
 }
 
+/**
+ * 返回unsigned value 转换成10进制字符串的长度
+ * @param v
+ * @return
+ */
 /* Return the number of digits of 'v' when converted to string in radix 10.
  * See ll2string() for more information. */
 uint32_t digits10(uint64_t v) {
@@ -268,6 +273,11 @@ uint32_t digits10(uint64_t v) {
     return 12 + digits10(v / 1000000000000UL);
 }
 
+/**
+ * 返回signed int长度
+ * @param v
+ * @return
+ */
 /* Like digits10() but for signed values. */
 uint32_t sdigits10(int64_t v) {
     if (v < 0) {
@@ -345,6 +355,13 @@ int ll2string(char *dst, size_t dstlen, long long svalue) {
     return length;
 }
 
+/**
+ * 转换字符串到long long
+ * @param s
+ * @param slen
+ * @param value
+ * @return
+ */
 /* Convert a string into a long long. Returns 1 if the string could be parsed
  * into a (non-overflowing) long long, 0 otherwise. The value will be set to
  * the parsed value when appropriate.
@@ -510,6 +527,15 @@ int d2string(char *buf, size_t len, double value) {
     return len;
 }
 
+/**
+ * 转换long double to string
+ *
+ * @param buf
+ * @param len
+ * @param value
+ * @param humanfriendly 是否删除末尾0 %f vs %g等
+ * @return
+ */
 /* Convert a long double into a string. If humanfriendly is non-zero
  * it does not use exponential format and trims trailing zeroes at the end,
  * however this results in loss of precision. Otherwise exp format is used
@@ -520,9 +546,11 @@ int d2string(char *buf, size_t len, double value) {
 int ld2string(char *buf, size_t len, long double value, int humanfriendly) {
     size_t l;
 
+    //正无限或者负无限
     if (isinf(value)) {
         /* Libc in odd systems (Hi Solaris!) will format infinite in a
          * different way, so better to handle it in an explicit way. */
+        //有些系统显示方式不同，最好用统一方式处理 inf -inf
         if (len < 5) return 0; /* No room. 5 is "-inf\0" */
         if (value > 0) {
             memcpy(buf,"inf",3);
@@ -537,9 +565,11 @@ int ld2string(char *buf, size_t len, long double value, int humanfriendly) {
          * way that is "non surprising" for the user (that is, most small
          * decimal numbers will be represented in a way that when converted
          * back into a string are exactly the same as what the user typed.) */
+        //转换
         l = snprintf(buf,len,"%.17Lf", value);
         if (l+1 > len) return 0; /* No room. */
         /* Now remove trailing zeroes after the '.' */
+        //移除末尾0
         if (strchr(buf,'.') != NULL) {
             char *p = buf+l-1;
             while(*p == '0') {

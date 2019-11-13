@@ -526,11 +526,11 @@ typedef long long mstime_t; /* millisecond time type. */
 /* A redis object, that is a type able to hold a string / list / set */
 
 /* The actual Redis Object */
-#define OBJ_STRING 0    /* String object. */
-#define OBJ_LIST 1      /* List object. */
-#define OBJ_SET 2       /* Set object. */
-#define OBJ_ZSET 3      /* Sorted set object. */
-#define OBJ_HASH 4      /* Hash object. */
+#define OBJ_STRING 0    /* String object. */ //string类型
+#define OBJ_LIST 1      /* List object. */ //list类型
+#define OBJ_SET 2       /* Set object. */ //set类型
+#define OBJ_ZSET 3      /* Sorted set object. */ //zset类型
+#define OBJ_HASH 4      /* Hash object. */ //hash类型
 
 /* The "module" object type is a special one that signals that the object
  * is one directly managed by a Redis module. In this case the value points
@@ -657,16 +657,17 @@ typedef struct RedisModuleDigest {
 /* Objects encoding. Some kind of objects like Strings and Hashes can be
  * internally represented in multiple ways. The 'encoding' field of the object
  * is set to one of this fields for this object. */
-#define OBJ_ENCODING_RAW 0     /* Raw representation */
-#define OBJ_ENCODING_INT 1     /* Encoded as integer */
-#define OBJ_ENCODING_HT 2      /* Encoded as hash table */
+//对象编码，有些对象内部可以有多种实现方式
+#define OBJ_ENCODING_RAW 0     /* Raw representation */ //sds
+#define OBJ_ENCODING_INT 1     /* Encoded as integer */ //long
+#define OBJ_ENCODING_HT 2      /* Encoded as hash table */ //dict
 #define OBJ_ENCODING_ZIPMAP 3  /* Encoded as zipmap */
-#define OBJ_ENCODING_LINKEDLIST 4 /* No longer used: old list encoding. */
-#define OBJ_ENCODING_ZIPLIST 5 /* Encoded as ziplist */
-#define OBJ_ENCODING_INTSET 6  /* Encoded as intset */
-#define OBJ_ENCODING_SKIPLIST 7  /* Encoded as skiplist */
-#define OBJ_ENCODING_EMBSTR 8  /* Embedded sds string encoding */
-#define OBJ_ENCODING_QUICKLIST 9 /* Encoded as linked list of ziplists */
+#define OBJ_ENCODING_LINKEDLIST 4 /* No longer used: old list encoding. */ //adlist
+#define OBJ_ENCODING_ZIPLIST 5 /* Encoded as ziplist */ //ziplist
+#define OBJ_ENCODING_INTSET 6  /* Encoded as intset */ //intset
+#define OBJ_ENCODING_SKIPLIST 7  /* Encoded as skiplist */ //skiplist & dict
+#define OBJ_ENCODING_EMBSTR 8  /* Embedded sds string encoding */ //embstr编码的sds
+#define OBJ_ENCODING_QUICKLIST 9 /* Encoded as linked list of ziplists */ //由双端链表和压缩链表构成的快速链表
 #define OBJ_ENCODING_STREAM 10 /* Encoded as a radix tree of listpacks */
 
 #define LRU_BITS 24
@@ -679,8 +680,9 @@ typedef struct redisObject {
     unsigned encoding:4;
     unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or
                             * LFU data (least significant 8 bits frequency
-                            * and most significant 16 bits access time). */
-    int refcount;
+                            * and most significant 16 bits access time). */ //LRU_BITS为24
+                           //对象最后一次被访问的时间，主要是计算空转时间，后期根据时长判断是否释放
+    int refcount; //引用计数
     void *ptr;
 } robj;
 

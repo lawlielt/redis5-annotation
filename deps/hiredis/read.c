@@ -144,6 +144,14 @@ static char *seekNewline(char *s, size_t len) {
     return NULL;
 }
 
+/**
+ * 转换string到long long
+ * 严格判断，字符串首尾均不能包含非数字字符
+ * @param s
+ * @param slen
+ * @param value
+ * @return
+ */
 /* Convert a string into a long long. Returns REDIS_OK if the string could be
  * parsed into a (non-overflowing) long long, REDIS_ERR otherwise. The value
  * will be set to the parsed value when appropriate.
@@ -166,11 +174,13 @@ static int string2ll(const char *s, size_t slen, long long *value) {
         return REDIS_ERR;
 
     /* Special case: first and only digit is 0. */
+    //特例：字符"0"
     if (slen == 1 && p[0] == '0') {
         if (value != NULL) *value = 0;
         return REDIS_OK;
     }
 
+    //负数
     if (p[0] == '-') {
         negative = 1;
         p++; plen++;
@@ -180,6 +190,7 @@ static int string2ll(const char *s, size_t slen, long long *value) {
             return REDIS_ERR;
     }
 
+    //首位字符必须是0-9
     /* First digit should be 1-9, otherwise the string should just be 0. */
     if (p[0] >= '1' && p[0] <= '9') {
         v = p[0]-'0';
@@ -191,6 +202,7 @@ static int string2ll(const char *s, size_t slen, long long *value) {
         return REDIS_ERR;
     }
 
+    //检查overflow
     while (plen < slen && p[0] >= '0' && p[0] <= '9') {
         if (v > (ULLONG_MAX / 10)) /* Overflow. */
             return REDIS_ERR;
@@ -203,6 +215,7 @@ static int string2ll(const char *s, size_t slen, long long *value) {
         p++; plen++;
     }
 
+    //尾部包含非数字字符
     /* Return if not all bytes were used. */
     if (plen < slen)
         return REDIS_ERR;
