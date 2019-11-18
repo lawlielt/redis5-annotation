@@ -33,6 +33,9 @@
 
 /* Node, quicklist, and Iterator are the only data structures used currently. */
 
+/**
+ * 32字节大小结构 描述quicklist里面的一个ziplist节点
+ */
 /* quicklistNode is a 32 byte struct describing a ziplist for a quicklist.
  * We use bit fields keep the quicklistNode at 32 bytes.
  * count: 16 bits, max 65536 (max zl bytes is 65k, so max count actually < 32k).
@@ -54,6 +57,11 @@ typedef struct quicklistNode {
     unsigned int extra : 10; /* more bits to steal for future usage */
 } quicklistNode;
 
+/**
+ * 4+N字节表示压缩后数据
+ * sz代表字节长度
+ * 如果quicklistNode-zl 压缩了，则node->zl 指向一个quicklistLZF
+ */
 /* quicklistLZF is a 4+N byte struct holding 'sz' followed by 'compressed'.
  * 'sz' is byte length of 'compressed' field.
  * 'compressed' is LZF data with total (compressed) length 'sz'
@@ -64,6 +72,13 @@ typedef struct quicklistLZF {
     char compressed[];
 } quicklistLZF;
 
+/**
+ * 40字节结构
+ * count 代表entries的数来给你
+ * len 代表quicklist nodes的长度
+ * compress -1 disable compresstion， 否则代表首尾两端不被压缩的节点个数
+ * fill 每个节点ziplist保持的合理长度
+ */
 /* quicklist is a 40 byte struct (on 64-bit systems) describing a quicklist.
  * 'count' is the number of total entries.
  * 'len' is the number of quicklist nodes.
@@ -73,8 +88,8 @@ typedef struct quicklistLZF {
 typedef struct quicklist {
     quicklistNode *head;
     quicklistNode *tail;
-    unsigned long count;        /* total count of all entries in all ziplists */
-    unsigned long len;          /* number of quicklistNodes */
+    unsigned long count;        /* total count of all entries in all ziplists */ //所有ziplist中的元素总数
+    unsigned long len;          /* number of quicklistNodes */ //node节点数量
     int fill : 16;              /* fill factor for individual nodes */
     unsigned int compress : 16; /* depth of end nodes not to compress;0=off */
 } quicklist;
@@ -90,11 +105,11 @@ typedef struct quicklistIter {
 typedef struct quicklistEntry {
     const quicklist *quicklist;
     quicklistNode *node;
-    unsigned char *zi;
-    unsigned char *value;
-    long long longval;
-    unsigned int sz;
-    int offset;
+    unsigned char *zi; //ziplist内元素
+    unsigned char *value; //如果是str， 则指向str指针
+    long long longval; //如果是llval， 则是llval值
+    unsigned int sz; //如果是str， 则strlen
+    int offset; //节点内的元素offset
 } quicklistEntry;
 
 #define QUICKLIST_HEAD 0
