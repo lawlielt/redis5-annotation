@@ -34,6 +34,13 @@
  * String Commands
  *----------------------------------------------------------------------------*/
 
+/**
+ * 检查string类型长度
+ * 最多512M
+ * @param c
+ * @param size
+ * @return
+ */
 static int checkStringLength(client *c, long long size) {
     if (size > 512*1024*1024) {
         addReplyError(c,"string exceeds maximum allowed size (512MB)");
@@ -64,19 +71,34 @@ static int checkStringLength(client *c, long long size) {
 #define OBJ_SET_EX (1<<2)     /* Set if time in seconds is given */
 #define OBJ_SET_PX (1<<3)     /* Set if time in ms in given */
 
+/**
+ * 通用set命令
+ * set key value [expiration EX seconds | PX milliseconds][NX|XX]
+ * @param c
+ * @param flags
+ * @param key
+ * @param val
+ * @param expire
+ * @param unit
+ * @param ok_reply
+ * @param abort_reply
+ */
 void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire, int unit, robj *ok_reply, robj *abort_reply) {
     long long milliseconds = 0; /* initialized to avoid any harmness warning */
 
     if (expire) {
+        //转换为longlong
         if (getLongLongFromObjectOrReply(c, expire, &milliseconds, NULL) != C_OK)
             return;
         if (milliseconds <= 0) {
             addReplyErrorFormat(c,"invalid expire time in %s",c->cmd->name);
             return;
         }
+        //如果是EX 即秒
         if (unit == UNIT_SECONDS) milliseconds *= 1000;
     }
 
+    //如果setnx key存在或者setxx key不存在。返回null
     if ((flags & OBJ_SET_NX && lookupKeyWrite(c->db,key) != NULL) ||
         (flags & OBJ_SET_XX && lookupKeyWrite(c->db,key) == NULL))
     {
@@ -85,13 +107,19 @@ void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire,
     }
     setKey(c->db,key,val);
     server.dirty++;
+    //设置过期时间
     if (expire) setExpire(c,c->db,key,mstime()+milliseconds);
+    //通知keyspace时间
     notifyKeyspaceEvent(NOTIFY_STRING,"set",key,c->db->id);
     if (expire) notifyKeyspaceEvent(NOTIFY_GENERIC,
         "expire",key,c->db->id);
     addReply(c, ok_reply ? ok_reply : shared.ok);
 }
 
+/**
+ * set命令
+ * @param c
+ */
 /* SET key value [NX] [XX] [EX <seconds>] [PX <milliseconds>] */
 void setCommand(client *c) {
     int j;
@@ -106,17 +134,17 @@ void setCommand(client *c) {
         if ((a[0] == 'n' || a[0] == 'N') &&
             (a[1] == 'x' || a[1] == 'X') && a[2] == '\0' &&
             !(flags & OBJ_SET_XX))
-        {
+        {//setnx
             flags |= OBJ_SET_NX;
         } else if ((a[0] == 'x' || a[0] == 'X') &&
                    (a[1] == 'x' || a[1] == 'X') && a[2] == '\0' &&
                    !(flags & OBJ_SET_NX))
-        {
+        {//setxx
             flags |= OBJ_SET_XX;
         } else if ((a[0] == 'e' || a[0] == 'E') &&
                    (a[1] == 'x' || a[1] == 'X') && a[2] == '\0' &&
                    !(flags & OBJ_SET_PX) && next)
-        {
+        {//ex
             flags |= OBJ_SET_EX;
             unit = UNIT_SECONDS;
             expire = next;
@@ -124,7 +152,7 @@ void setCommand(client *c) {
         } else if ((a[0] == 'p' || a[0] == 'P') &&
                    (a[1] == 'x' || a[1] == 'X') && a[2] == '\0' &&
                    !(flags & OBJ_SET_EX) && next)
-        {
+        {//px
             flags |= OBJ_SET_PX;
             unit = UNIT_MILLISECONDS;
             expire = next;
@@ -135,31 +163,50 @@ void setCommand(client *c) {
         }
     }
 
+    //尝试缩小value空间占用
     c->argv[2] = tryObjectEncoding(c->argv[2]);
     setGenericCommand(c,flags,c->argv[1],c->argv[2],expire,unit,NULL,NULL);
 }
 
+/**
+ * setnx命令
+ * @param c
+ */
 void setnxCommand(client *c) {
     c->argv[2] = tryObjectEncoding(c->argv[2]);
     setGenericCommand(c,OBJ_SET_NX,c->argv[1],c->argv[2],NULL,0,shared.cone,shared.czero);
 }
 
+/**
+ * setex命令
+ * @param c
+ */
 void setexCommand(client *c) {
     c->argv[3] = tryObjectEncoding(c->argv[3]);
     setGenericCommand(c,OBJ_SET_NO_FLAGS,c->argv[1],c->argv[3],c->argv[2],UNIT_SECONDS,NULL,NULL);
 }
 
+/**
+ * psetex命令
+ * @param c
+ */
 void psetexCommand(client *c) {
     c->argv[3] = tryObjectEncoding(c->argv[3]);
     setGenericCommand(c,OBJ_SET_NO_FLAGS,c->argv[1],c->argv[3],c->argv[2],UNIT_MILLISECONDS,NULL,NULL);
 }
 
+/**
+ * get通用命令
+ * @param c
+ * @return
+ */
 int getGenericCommand(client *c) {
     robj *o;
 
     if ((o = lookupKeyReadOrReply(c,c->argv[1],shared.null[c->resp])) == NULL)
         return C_OK;
 
+    //非string类型，返回错误
     if (o->type != OBJ_STRING) {
         addReply(c,shared.wrongtypeerr);
         return C_ERR;
@@ -169,23 +216,41 @@ int getGenericCommand(client *c) {
     }
 }
 
+/**
+ * get命令
+ * @param c
+ */
 void getCommand(client *c) {
     getGenericCommand(c);
 }
 
+/**
+ * getset命令
+ * @param c
+ */
 void getsetCommand(client *c) {
     if (getGenericCommand(c) == C_ERR) return;
     c->argv[2] = tryObjectEncoding(c->argv[2]);
     setKey(c->db,c->argv[1],c->argv[2]);
     notifyKeyspaceEvent(NOTIFY_STRING,"set",c->argv[1],c->db->id);
+    //server变更
     server.dirty++;
 }
 
+/**
+ * setrange命令
+ * setrange key offset value
+ * 如果offset大于length，则padding
+ * 不存在的key会当作空字符串处理
+ * 最大pow(2, 29) - 1,因为key最大512M
+ * @param c
+ */
 void setrangeCommand(client *c) {
     robj *o;
     long offset;
     sds value = c->argv[3]->ptr;
 
+    //offset转为long long
     if (getLongFromObjectOrReply(c,c->argv[2],&offset,NULL) != C_OK)
         return;
 
@@ -195,6 +260,7 @@ void setrangeCommand(client *c) {
     }
 
     o = lookupKeyWrite(c->db,c->argv[1]);
+    //如果key不存在
     if (o == NULL) {
         /* Return 0 when setting nothing on a non-existing string */
         if (sdslen(value) == 0) {
@@ -203,15 +269,18 @@ void setrangeCommand(client *c) {
         }
 
         /* Return when the resulting string exceeds allowed size */
+        //最大不能超过key的大小 512M
         if (checkStringLength(c,offset+sdslen(value)) != C_OK)
             return;
 
+        //创建新key，并初始化为0
         o = createObject(OBJ_STRING,sdsnewlen(NULL, offset+sdslen(value)));
         dbAdd(c->db,c->argv[1],o);
     } else {
         size_t olen;
 
         /* Key exists, check type */
+        //必须是string类型
         if (checkType(c,o,OBJ_STRING))
             return;
 
@@ -227,10 +296,12 @@ void setrangeCommand(client *c) {
             return;
 
         /* Create a copy when the object is shared or encoded. */
+        //覆盖key为unshared或decode int转为string
         o = dbUnshareStringValue(c->db,c->argv[1],o);
     }
 
     if (sdslen(value) > 0) {
+        //拷贝字符到offset
         o->ptr = sdsgrowzero(o->ptr,offset+sdslen(value));
         memcpy((char*)o->ptr+offset,value,sdslen(value));
         signalModifiedKey(c->db,c->argv[1]);
@@ -241,6 +312,12 @@ void setrangeCommand(client *c) {
     addReplyLongLong(c,sdslen(o->ptr));
 }
 
+/**
+ * getrange命令
+ * getrange key start end
+ * [start, end]
+ * @param c
+ */
 void getrangeCommand(client *c) {
     robj *o;
     long long start, end;
@@ -254,6 +331,7 @@ void getrangeCommand(client *c) {
     if ((o = lookupKeyReadOrReply(c,c->argv[1],shared.emptybulk)) == NULL ||
         checkType(c,o,OBJ_STRING)) return;
 
+    //获取key的value的str
     if (o->encoding == OBJ_ENCODING_INT) {
         str = llbuf;
         strlen = ll2string(llbuf,sizeof(llbuf),(long)o->ptr);
@@ -282,6 +360,11 @@ void getrangeCommand(client *c) {
     }
 }
 
+/**
+ * mget命令
+ * mget key [key...]
+ * @param c
+ */
 void mgetCommand(client *c) {
     int j;
 
@@ -300,6 +383,13 @@ void mgetCommand(client *c) {
     }
 }
 
+/**
+ * mset generic
+ * mset key value[key value...]
+ * msetnx key value[key value...]
+ * @param c
+ * @param nx
+ */
 void msetGenericCommand(client *c, int nx) {
     int j;
 
@@ -328,23 +418,40 @@ void msetGenericCommand(client *c, int nx) {
     addReply(c, nx ? shared.cone : shared.ok);
 }
 
+/**
+ * mset命令
+ * mset key value[key value...]
+ * @param c
+ */
 void msetCommand(client *c) {
     msetGenericCommand(c,0);
 }
 
+/**
+ * msetnx命令
+ * msetnx key value[key value...]
+ */
 void msetnxCommand(client *c) {
     msetGenericCommand(c,1);
 }
 
+/**
+ * incr desc 命令
+ * @param c
+ * @param incr
+ */
 void incrDecrCommand(client *c, long long incr) {
     long long value, oldvalue;
     robj *o, *new;
 
     o = lookupKeyWrite(c->db,c->argv[1]);
+    //如果key存在，但不是string类型则返回
     if (o != NULL && checkType(c,o,OBJ_STRING)) return;
+    //如果value不能转化为整型则返回
     if (getLongLongFromObjectOrReply(c,o,&value,NULL) != C_OK) return;
 
     oldvalue = value;
+    //整数溢出
     if ((incr < 0 && oldvalue < 0 && incr < (LLONG_MIN-oldvalue)) ||
         (incr > 0 && oldvalue > 0 && incr > (LLONG_MAX-oldvalue))) {
         addReplyError(c,"increment or decrement would overflow");
@@ -352,6 +459,7 @@ void incrDecrCommand(client *c, long long incr) {
     }
     value += incr;
 
+    //value在范围内，且非共享整型, 直接更改o的值
     if (o && o->refcount == 1 && o->encoding == OBJ_ENCODING_INT &&
         (value < 0 || value >= OBJ_SHARED_INTEGERS) &&
         value >= LONG_MIN && value <= LONG_MAX)
@@ -359,6 +467,7 @@ void incrDecrCommand(client *c, long long incr) {
         new = o;
         o->ptr = (void*)((long)value);
     } else {
+        //新建新的整型robj
         new = createStringObjectFromLongLongForValue(value);
         if (o) {
             dbOverwrite(c->db,c->argv[1],new);
@@ -374,14 +483,28 @@ void incrDecrCommand(client *c, long long incr) {
     addReply(c,shared.crlf);
 }
 
+/**
+ * incr命令
+ * incr key
+ * @param c
+ */
 void incrCommand(client *c) {
     incrDecrCommand(c,1);
 }
 
+/**
+ * decr命令
+ * @param c
+ */
 void decrCommand(client *c) {
     incrDecrCommand(c,-1);
 }
 
+/**
+ * incrby命令
+ * incrby key increment
+ * @param c
+ */
 void incrbyCommand(client *c) {
     long long incr;
 
@@ -389,6 +512,10 @@ void incrbyCommand(client *c) {
     incrDecrCommand(c,incr);
 }
 
+/**
+ * decr
+ * @param c
+ */
 void decrbyCommand(client *c) {
     long long incr;
 
@@ -396,21 +523,30 @@ void decrbyCommand(client *c) {
     incrDecrCommand(c,-incr);
 }
 
+/**
+ * incrbyfloat 命令
+ * incrbyfloat key increment
+ * @param c
+ */
 void incrbyfloatCommand(client *c) {
     long double incr, value;
     robj *o, *new, *aux;
 
     o = lookupKeyWrite(c->db,c->argv[1]);
+    //key不存在或非string类型
     if (o != NULL && checkType(c,o,OBJ_STRING)) return;
+    //值或者increment不是double
     if (getLongDoubleFromObjectOrReply(c,o,&value,NULL) != C_OK ||
         getLongDoubleFromObjectOrReply(c,c->argv[2],&incr,NULL) != C_OK)
         return;
 
     value += incr;
+    //非数字
     if (isnan(value) || isinf(value)) {
         addReplyError(c,"increment would produce NaN or Infinity");
         return;
     }
+    //创建新key
     new = createStringObjectFromLongDouble(value,1);
     if (o)
         dbOverwrite(c->db,c->argv[1],new);
@@ -424,12 +560,17 @@ void incrbyfloatCommand(client *c) {
     /* Always replicate INCRBYFLOAT as a SET command with the final value
      * in order to make sure that differences in float precision or formatting
      * will not create differences in replicas or after an AOF restart. */
+    //重定向为set命令 set key new 确保double的精度问题
     aux = createStringObject("SET",3);
     rewriteClientCommandArgument(c,0,aux);
     decrRefCount(aux);
     rewriteClientCommandArgument(c,2,new);
 }
 
+/**
+ * append key value
+ * @param c
+ */
 void appendCommand(client *c) {
     size_t totlen;
     robj *o, *append;
@@ -463,6 +604,10 @@ void appendCommand(client *c) {
     addReplyLongLong(c,totlen);
 }
 
+/**
+ * strlen key
+ * @param c
+ */
 void strlenCommand(client *c) {
     robj *o;
     if ((o = lookupKeyReadOrReply(c,c->argv[1],shared.czero)) == NULL ||

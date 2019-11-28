@@ -13,6 +13,11 @@ size_t lazyfreeGetPendingObjectsCount(void) {
     return aux;
 }
 
+/**
+ * 返回释放object需要的工作量
+ * @param obj
+ * @return
+ */
 /* Return the amount of work needed in order to free an object.
  * The return value is not always the actual number of allocations the
  * object is compoesd of, but a number proportional to it.
@@ -29,15 +34,19 @@ size_t lazyfreeGetPendingObjectsCount(void) {
  * For lists the function returns the number of elements in the quicklist
  * representing the list. */
 size_t lazyfreeGetFreeEffort(robj *obj) {
+    //list返回长度
     if (obj->type == OBJ_LIST) {
         quicklist *ql = obj->ptr;
         return ql->len;
+    //set返回字典大小
     } else if (obj->type == OBJ_SET && obj->encoding == OBJ_ENCODING_HT) {
         dict *ht = obj->ptr;
         return dictSize(ht);
+    //zset返回跳跃表大小
     } else if (obj->type == OBJ_ZSET && obj->encoding == OBJ_ENCODING_SKIPLIST){
         zset *zs = obj->ptr;
         return zs->zsl->length;
+    //hash返回字典大小
     } else if (obj->type == OBJ_HASH && obj->encoding == OBJ_ENCODING_HT) {
         dict *ht = obj->ptr;
         return dictSize(ht);
@@ -46,6 +55,10 @@ size_t lazyfreeGetFreeEffort(robj *obj) {
     }
 }
 
+/**
+ * 异步删除key、value以及相关的expire信息
+ * 满足条件会放到lazy free list，这个list会之后另外的bio线程中处理
+ */
 /* Delete a key, value, and associated expiration entry if any, from the DB.
  * If there are enough allocations to free the value object may be put into
  * a lazy free list instead of being freed synchronously. The lazy free list
@@ -59,9 +72,11 @@ int dbAsyncDelete(redisDb *db, robj *key) {
     /* If the value is composed of a few allocations, to free in a lazy way
      * is actually just slower... So under a certain limit we just free
      * the object synchronously. */
+    //删除key，返回val的entry
     dictEntry *de = dictUnlink(db->dict,key->ptr);
     if (de) {
         robj *val = dictGetVal(de);
+        //获取val的长度
         size_t free_effort = lazyfreeGetFreeEffort(val);
 
         /* If releasing the object is too much work, do it in the background
@@ -72,9 +87,13 @@ int dbAsyncDelete(redisDb *db, robj *key) {
          * objects, and then call dbDelete(). In this case we'll fall
          * through and reach the dictFreeUnlinkedEntry() call, that will be
          * equivalent to just calling decrRefCount(). */
+        //如果超过阈值，且引用计数为1
         if (free_effort > LAZYFREE_THRESHOLD && val->refcount == 1) {
+            //原子增1
             atomicIncr(lazyfree_objects,1);
+            //后台删除
             bioCreateBackgroundJob(BIO_LAZY_FREE,val,NULL,NULL);
+            //val置NULL
             dictSetVal(db->dict,de,NULL);
         }
     }
@@ -82,6 +101,7 @@ int dbAsyncDelete(redisDb *db, robj *key) {
     /* Release the key-val pair, or just the key if we set the val
      * field to NULL in order to lazy free it later. */
     if (de) {
+        //释放dictEntry. 如果val在后台lazyfree删除， val置NULL，没有影响
         dictFreeUnlinkedEntry(db->dict,de);
         if (server.cluster_enabled) slotToKeyDel(key);
         return 1;
@@ -90,6 +110,11 @@ int dbAsyncDelete(redisDb *db, robj *key) {
     }
 }
 
+/**
+ * 释放一个robj
+ * 如果obj足够大，则异步释放
+ * @param o
+ */
 /* Free an object, if the object is huge enough, free it in async way. */
 void freeObjAsync(robj *o) {
     size_t free_effort = lazyfreeGetFreeEffort(o);

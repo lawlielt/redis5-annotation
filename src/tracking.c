@@ -178,6 +178,10 @@ void trackingInvalidateSlot(uint64_t slot) {
     TrackingTableUsedSlots--;
 }
 
+/**
+ * key 的value变更时调用，向所有包含当前key的slot发送通知
+ * @param keyobj
+ */
 /* This function is called from signalModifiedKey() or other places in Redis
  * when a key changes value. In the context of keys tracking, our task here is
  * to send a notification to every client that may have keys about such caching

@@ -267,6 +267,10 @@ void activeExpireCycle(int type) {
  * the keys as implemented in 3.2.
  *----------------------------------------------------------------------------*/
 
+/**
+ * 字典-- 记录我们从slave expire的key。
+ * hash表中sds string代表key， 64位的unsigned int表示db id < 64的db当前key是否存在
+ */
 /* The dictionary where we remember key names and database ID of keys we may
  * want to expire from the slave. Since this function is not often used we
  * don't even care to initialize the database at startup. We'll do it once
@@ -340,6 +344,11 @@ void expireSlaveKeys(void) {
     }
 }
 
+/**
+ * 记录可写入slave收到的expire或相似的命令
+ * @param db
+ * @param key
+ */
 /* Track keys that received an EXPIRE or similar command in the context
  * of a writable slave. */
 void rememberSlaveKeyWithExpire(redisDb *db, robj *key) {
@@ -366,6 +375,7 @@ void rememberSlaveKeyWithExpire(redisDb *db, robj *key) {
         dictSetUnsignedIntegerVal(de,0);
     }
 
+    //bitmap 更新
     uint64_t dbids = dictGetUnsignedIntegerVal(de);
     dbids |= (uint64_t)1 << db->id;
     dictSetUnsignedIntegerVal(de,dbids);

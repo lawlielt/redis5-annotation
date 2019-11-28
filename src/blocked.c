@@ -164,6 +164,10 @@ void queueClientForReprocessing(client *c) {
     }
 }
 
+/**
+ * 设为client为非阻塞状态
+ * @param c
+ */
 /* Unblock a client calling the right function depending on the kind
  * of operation the client is blocking for. */
 void unblockClient(client *c) {
@@ -229,12 +233,18 @@ void disconnectAllBlockedClients(void) {
     }
 }
 
+/**
+ * 处理list类型阻塞等待
+ * @param o
+ * @param rl
+ */
 /* Helper function for handleClientsBlockedOnKeys(). This function is called
  * when there may be clients blocked on a list key, and there may be new
  * data to fetch (the key is ready). */
 void serveClientsBlockedOnListKey(robj *o, readyList *rl) {
     /* We serve clients in the same order they blocked for
      * this key, from the first blocked to the last. */
+    //处理阻塞在当前key的client列表
     dictEntry *de = dictFind(rl->db->blocking_keys,rl->key);
     if (de) {
         list *clients = dictGetVal(de);
@@ -244,9 +254,11 @@ void serveClientsBlockedOnListKey(robj *o, readyList *rl) {
             listNode *clientnode = listFirst(clients);
             client *receiver = clientnode->value;
 
+            //非list类型阻塞
             if (receiver->btype != BLOCKED_LIST) {
                 /* Put at the tail, so that at the next call
                  * we'll not run into it again. */
+                //头节点删除， 尾节点插入, 避免重复处理
                 listDelNode(clients,clientnode);
                 listAddNodeTail(clients,receiver);
                 continue;
@@ -271,6 +283,7 @@ void serveClientsBlockedOnListKey(robj *o, readyList *rl) {
                 {
                     /* If we failed serving the client we need
                      * to also undo the POP operation. */
+                    //处理失败，放回
                     listTypePush(o,value,where);
                 }
 
@@ -430,6 +443,10 @@ void serveClientsBlockedOnStreamKey(robj *o, readyList *rl) {
     }
 }
 
+/**
+ * 每次命令执行完成之后调用，处理client的list、stream、zset阻塞命令
+ * 至少有一个db阻塞的key，在有元素写入时，同步到server.ready_keys
+ */
 /* This function should be called by Redis every time a single command,
  * a MULTI/EXEC block, or a Lua script, terminated its execution after
  * being called by a client. It handles serving clients blocked in
@@ -459,6 +476,7 @@ void handleClientsBlockedOnKeys(void) {
          * locally. This way as we run the old list we are free to call
          * signalKeyAsReady() that may push new elements in server.ready_keys
          * when handling clients blocked into BRPOPLPUSH. */
+        //我们处理老的ready_keys，新建新的ready_keys
         l = server.ready_keys;
         server.ready_keys = listCreate();
 
@@ -468,9 +486,11 @@ void handleClientsBlockedOnKeys(void) {
 
             /* First of all remove this key from db->ready_keys so that
              * we can safely call signalKeyAsReady() against this key. */
+            //删除重复判断
             dictDelete(rl->db->ready_keys,rl->key);
 
             /* Serve clients blocked on list key. */
+            //获取value
             robj *o = lookupKeyWrite(rl->db,rl->key);
 
             if (o != NULL) {
@@ -599,6 +619,13 @@ void unblockClientWaitingData(client *c) {
     }
 }
 
+/**
+ * 如果指定key有客户端阻塞等待，这个方法会把key，放到server.ready_keys列表
+ * db->ready_keys是一个hash tables，主要是为了避免重复插入key
+ * blpop 阻塞list，有数据就直接返回
+ * @param db
+ * @param key
+ */
 /* If the specified key has clients blocked waiting for list pushes, this
  * function will put the key reference into the server.ready_keys list.
  * Note that db->ready_keys is a hash table that allows us to avoid putting
@@ -610,18 +637,22 @@ void signalKeyAsReady(redisDb *db, robj *key) {
     readyList *rl;
 
     /* No clients blocking for this key? No need to queue it. */
+    //不存在客户端在阻塞等待这个key，返回
     if (dictFind(db->blocking_keys,key) == NULL) return;
 
     /* Key was already signaled? No need to queue it again. */
+    //如果key已经添加，则返回
     if (dictFind(db->ready_keys,key) != NULL) return;
 
     /* Ok, we need to queue this key into server.ready_keys. */
+    //放到server的ready_keys队列
     rl = zmalloc(sizeof(*rl));
     rl->key = key;
     rl->db = db;
     incrRefCount(key);
     listAddNodeTail(server.ready_keys,rl);
 
+    //同时放入db的ready_keys字典，避免重复插入
     /* We also add the key in the db->ready_keys dictionary in order
      * to avoid adding it multiple times into a list with a simple O(1)
      * check. */

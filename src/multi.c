@@ -300,6 +300,11 @@ void unwatchAllKeys(client *c) {
     }
 }
 
+/**
+ * touch key，所有watched当前key的所有client，下一次exec会fail
+ * @param db
+ * @param key
+ */
 /* "Touch" a key, so that if this key is being WATCHed by some client the
  * next EXEC will fail. */
 void touchWatchedKey(redisDb *db, robj *key) {
@@ -313,6 +318,7 @@ void touchWatchedKey(redisDb *db, robj *key) {
 
     /* Mark all the clients watching this key as CLIENT_DIRTY_CAS */
     /* Check if we are already watching for this key */
+    //设置所有watching当前key的client flag为CLIENT_DIRTY_CAS
     listRewind(clients,&li);
     while((ln = listNext(&li))) {
         client *c = listNodeValue(ln);

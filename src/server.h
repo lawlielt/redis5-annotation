@@ -717,8 +717,8 @@ typedef struct clientReplyBlock {
 typedef struct redisDb {
     dict *dict;                 /* The keyspace for this DB */
     dict *expires;              /* Timeout of keys with a timeout set */
-    dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP)*/
-    dict *ready_keys;           /* Blocked keys that received a PUSH */
+    dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP)*/ //hash结构 hash为阻塞的key，value是list结构，存储对应的client列表
+    dict *ready_keys;           /* Blocked keys that received a PUSH */ //hash结构， key为对应key，value为null。主要是为了快速查询key是不是已经存在ready_keys,防止重复处理
     dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */
     int id;                     /* Database ID */
     long long avg_ttl;          /* Average TTL, just for stats */
@@ -1260,7 +1260,7 @@ struct redisServer {
                                       to child process. */
     sds aof_child_diff;             /* AOF diff accumulator child side. */
     /* RDB persistence */
-    long long dirty;                /* Changes to DB from the last save */
+    long long dirty;                /* Changes to DB from the last save */ //上次save之后，有过变动的次数
     long long dirty_before_bgsave;  /* Used to restore dirty on failed BGSAVE */
     pid_t rdb_child_pid;            /* PID of RDB saving child */
     struct saveparam *saveparams;   /* Save points array for RDB */
@@ -1376,7 +1376,7 @@ struct redisServer {
     unsigned int blocked_clients;   /* # of clients executing a blocking cmd.*/
     unsigned int blocked_clients_by_type[BLOCKED_NUM];
     list *unblocked_clients; /* list of clients to unblock before next loop */
-    list *ready_keys;        /* List of readyList structures for BLPOP & co */
+    list *ready_keys;        /* List of readyList structures for BLPOP & co */ //list结构，每个item结构为{key:xxx, db:xxx}
     /* Client side caching. */
     unsigned int tracking_clients;  /* # of clients with tracking enabled.*/
     int tracking_table_max_fill;    /* Max fill percentage. */
