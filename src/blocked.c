@@ -549,6 +549,7 @@ void blockForKeys(client *c, int btype, robj **keys, int numkeys, mstime_t timeo
     if (target != NULL) incrRefCount(target);
 
     for (j = 0; j < numkeys; j++) {
+        //存储在bpop.keys的键是key，值如果是list或者sorted-set为null， stream为streamID
         /* The value associated with the key name in the bpop.keys dictionary
          * is NULL for lists and sorted sets, or the stream ID for streams. */
         void *key_data = NULL;
@@ -557,6 +558,7 @@ void blockForKeys(client *c, int btype, robj **keys, int numkeys, mstime_t timeo
             memcpy(key_data,ids+j,sizeof(streamID));
         }
 
+        //如果key已经存在，则忽略
         /* If the key already exists in the dictionary ignore it. */
         if (dictAdd(c->bpop.keys,keys[j],key_data) != DICT_OK) {
             zfree(key_data);
@@ -564,6 +566,7 @@ void blockForKeys(client *c, int btype, robj **keys, int numkeys, mstime_t timeo
         }
         incrRefCount(keys[j]);
 
+        //添加当前key到blocking_keys
         /* And in the other "side", to map keys -> clients */
         de = dictFind(c->db->blocking_keys,keys[j]);
         if (de == NULL) {
