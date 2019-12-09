@@ -747,13 +747,13 @@ typedef struct multiState {
 typedef struct blockingState {
     /* Generic fields. */
     mstime_t timeout;       /* Blocking operation timeout. If UNIX current time
-                             * is > timeout then the operation timed out. */
+                             * is > timeout then the operation timed out. */ //阻塞超时时间
 
     /* BLOCKED_LIST, BLOCKED_ZSET and BLOCKED_STREAM */
     dict *keys;             /* The keys we are waiting to terminate a blocking
-                             * operation such as BLPOP or XREAD. Or NULL. */
+                             * operation such as BLPOP or XREAD. Or NULL. *///设置所有造成客户端阻塞的键
     robj *target;           /* The key that should receive the element,
-                             * for BRPOPLPUSH. */
+                             * for BRPOPLPUSH. */ //目标选项，target在执行brpoplpush使用
 
     /* BLOCK_STREAM */
     size_t xread_count;     /* XREAD COUNT option. */
@@ -887,7 +887,7 @@ typedef struct client {
     int slave_capa;         /* Slave capabilities: SLAVE_CAPA_* bitwise OR. */
     multiState mstate;      /* MULTI/EXEC state */
     int btype;              /* Type of blocking op if CLIENT_BLOCKED. */
-    blockingState bpop;     /* blocking state */
+    blockingState bpop;     /* blocking state */ //记录阻塞状态
     long long woff;         /* Last write global replication offset. */
     list *watched_keys;     /* Keys WATCHED for MULTI/EXEC CAS */
     dict *pubsub_channels;  /* channels a client is interested in (SUBSCRIBE) */
