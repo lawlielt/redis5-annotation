@@ -8,909 +8,997 @@
 		<Option virtualFolders="CMake Files\;CMake Files\deps\;CMake Files\deps\hiredis\;CMake Files\deps\linenoise\;CMake Files\deps\lua\;CMake Files\src\;CMake Files\src\modules\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/local">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install/local"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/strip">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install/strip"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="lawlielt_test">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/lawlielt_test" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/lawlielt_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 lawlielt_test"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 lawlielt_test"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="lawlielt_test/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/lawlielt_test" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/lawlielt_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 lawlielt_test/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 lawlielt_test/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="list_install_components">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 list_install_components"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="redis-cli">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/redis-cli" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/redis-cli" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-cli"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-cli"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="redis-cli/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/redis-cli" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/redis-cli" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-cli/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-cli/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="redis-server">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/redis-server" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/redis-server" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-server"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-server"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="redis-server/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/src/redis-server" prefix_auto="0" extension_auto="0"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/src/redis-server" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="src"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/lua/src"/>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/lua/src"/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-server/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 redis-server/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis-test">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis-test/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linenoise">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/liblinenoise.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/linenoise/liblinenoise.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
-				<Compiler/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 linenoise"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 linenoise"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linenoise/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/liblinenoise.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/linenoise"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/linenoise/liblinenoise.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/linenoise"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
-				<Compiler/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 linenoise/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 linenoise/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/linenoise/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="lua">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/lua/liblua.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/lua"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/lua/liblua.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/lua"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
-				<Compiler/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 lua"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 lua"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="lua/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/lua/liblua.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/lua"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/lua/liblua.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/lua"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
-				<Compiler/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 lua/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 lua/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/lua/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/async.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/async.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/async.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/async.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/dict.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/dict.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/dict.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/dict.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/net.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/net.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/net.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/net.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/read.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/read.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/read.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/read.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sds.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sds.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sds.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sds.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sockcompat.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sockcompat.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sockcompat.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sockcompat.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/test.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/test.c">
 			<Option target="hiredis-test"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/linenoise.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/linenoise/linenoise.c">
 			<Option target="linenoise"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/linenoise.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/linenoise/linenoise.h">
 			<Option target="linenoise"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/fpconv.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/fpconv.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/fpconv.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/fpconv.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lapi.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lapi.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lapi.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lapi.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lauxlib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lauxlib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lauxlib.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lauxlib.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lbaselib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lbaselib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lcode.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lcode.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lcode.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lcode.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldblib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldblib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldebug.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldebug.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldebug.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldebug.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldo.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldo.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldo.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldo.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ldump.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ldump.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lfunc.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lfunc.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lfunc.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lfunc.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lgc.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lgc.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lgc.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lgc.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/linit.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/linit.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/liolib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/liolib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/llex.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/llex.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/llex.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/llex.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lmathlib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lmathlib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lmem.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lmem.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lmem.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lmem.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/loadlib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/loadlib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lobject.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lobject.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lobject.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lobject.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lopcodes.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lopcodes.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lopcodes.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lopcodes.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/loslib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/loslib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lparser.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lparser.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lparser.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lparser.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lstate.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lstate.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lstate.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lstate.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lstring.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lstring.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lstring.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lstring.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lstrlib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lstrlib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ltable.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ltable.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ltable.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ltable.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ltablib.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ltablib.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ltm.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ltm.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/ltm.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/ltm.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lua_bit.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lua_bit.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lua_cjson.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lua_cjson.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lua_cmsgpack.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lua_cmsgpack.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lua_struct.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lua_struct.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lundump.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lundump.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lundump.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lundump.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lvm.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lvm.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lvm.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lvm.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lzio.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lzio.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/lzio.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/lzio.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/strbuf.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/strbuf.c">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/src/strbuf.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/src/strbuf.h">
 			<Option target="lua"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/acl.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/acl.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/adlist.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/adlist.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/adlist.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/adlist.h">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/ae.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/ae.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/ae.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/ae.h">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/anet.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/anet.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/anet.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/anet.h">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/aof.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/aof.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/bio.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/bio.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/bio.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/bio.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/bitops.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/bitops.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/blocked.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/blocked.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/childinfo.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/childinfo.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/cluster.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/cluster.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/cluster.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/cluster.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/config.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/config.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/config.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/config.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/connection.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/connection.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/connection.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/connection.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/crc16.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/crc16.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/crc64.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/crc64.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/crc64.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/crc64.h">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/db.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/db.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/debug.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/debug.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/defrag.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/defrag.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/dict.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/dict.c">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/dict.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/dict.h">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/endianconv.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/endianconv.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/endianconv.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/endianconv.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/evict.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/evict.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/expire.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/expire.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geo.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geo.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geo.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geo.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geohash.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geohash.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geohash.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geohash.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geohash_helper.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geohash_helper.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/geohash_helper.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/geohash_helper.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/gopher.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/gopher.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/hyperloglog.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/hyperloglog.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/intset.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/intset.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/intset.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/intset.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/latency.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/latency.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/latency.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/latency.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lazyfree.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lazyfree.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/listpack.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/listpack.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/listpack.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/listpack.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/localtime.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/localtime.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lolwut.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lolwut.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lolwut.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lolwut.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lolwut5.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lolwut5.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lolwut6.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lolwut6.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lzf_c.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lzf_c.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/lzf_d.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/lzf_d.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/memtest.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/memtest.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/module.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/module.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/multi.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/multi.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/networking.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/networking.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/notify.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/notify.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/object.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/object.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/pqsort.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/pqsort.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/pqsort.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/pqsort.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/pubsub.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/pubsub.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/quicklist.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/quicklist.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/quicklist.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/quicklist.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rand.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rand.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rand.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rand.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rax.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rax.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rax.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rax.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rdb.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rdb.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rdb.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rdb.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/redis-check-aof.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/redis-check-aof.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/redis-check-rdb.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/redis-check-rdb.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/redis-cli.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/redis-cli.c">
 			<Option target="redis-cli"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/release.c">
-			<Option target="redis-cli"/>
-			<Option target="redis-server"/>
-		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/release.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/release.c">
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/replication.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/release.h">
+			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rio.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/replication.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/rio.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rio.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/scripting.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/rio.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sds.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/scripting.c">
+			<Option target="redis-server"/>
+		</Unit>
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sds.c">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sds.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sds.h">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sentinel.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sentinel.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/server.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/server.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/server.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/server.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/setproctitle.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/setproctitle.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sha1.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sha1.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sha1.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sha1.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sha256.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sha256.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sha256.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sha256.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/siphash.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/siphash.c">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/slowlog.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/slowlog.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/slowlog.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/slowlog.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sort.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sort.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sparkline.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sparkline.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/sparkline.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/sparkline.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/syncio.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/syncio.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_hash.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_hash.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_list.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_list.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_set.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_set.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_stream.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_stream.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_string.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_string.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/t_zset.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/t_zset.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/tls.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/tls.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/tracking.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/tracking.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/util.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/util.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/util.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/util.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/ziplist.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/ziplist.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/ziplist.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/ziplist.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/zipmap.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/zipmap.c">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/zipmap.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/zipmap.h">
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/zmalloc.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/zmalloc.c">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/zmalloc.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/zmalloc.h">
 			<Option target="lawlielt_test"/>
 			<Option target="redis-cli"/>
 			<Option target="redis-server"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\hiredis\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.pc.in">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.pc.in">
 			<Option virtualFolder="CMake Files\deps\hiredis\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/linenoise/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\linenoise\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\lua\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/modules/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/modules/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\modules\"/>
 		</Unit>
 	</Project>

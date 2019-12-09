@@ -8,144 +8,168 @@
 		<Option virtualFolders="CMake Files\;CMake Files\deps\;CMake Files\deps\hiredis\;CMake Files\deps\linenoise\;CMake Files\deps\lua\;CMake Files\src\;CMake Files\src\modules\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis-test">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis-test/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis-test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis-test/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="hiredis/fast">
-				<Option output="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/lawlielt/repository/redis5-annotation/deps/hiredis"/>
+				<Option output="/Users/yanan25/repository/redis5-annotation/deps/hiredis/libhiredis.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yanan25/repository/redis5-annotation/deps/hiredis"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Users/yanan25/repository/redis5-annotation/deps/hiredis/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/lawlielt/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 hiredis/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/Users/yanan25/repository/redis5-annotation/deps/hiredis/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/async.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/async.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/async.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/async.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/dict.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/dict.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/dict.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/dict.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/net.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/net.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/net.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/net.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/read.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/read.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/read.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/read.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sds.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sds.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sds.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sds.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sockcompat.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sockcompat.c">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/sockcompat.h">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/sockcompat.h">
 			<Option target="hiredis"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/test.c">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/test.c">
 			<Option target="hiredis-test"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\hiredis\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/hiredis/hiredis.pc.in">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/hiredis/hiredis.pc.in">
 			<Option virtualFolder="CMake Files\deps\hiredis\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/linenoise/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/linenoise/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\linenoise\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/deps/lua/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/deps/lua/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\deps\lua\"/>
 		</Unit>
-		<Unit filename="/Users/lawlielt/repository/redis5-annotation/src/modules/CMakeLists.txt">
+		<Unit filename="/Users/yanan25/repository/redis5-annotation/src/modules/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\modules\"/>
 		</Unit>
 	</Project>

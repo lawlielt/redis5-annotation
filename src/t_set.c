@@ -36,6 +36,11 @@
 void sunionDiffGenericCommand(client *c, robj **setkeys, int setnum,
                               robj *dstkey, int op);
 
+/**
+ * 根据value的类型创建不同类型的set
+ * @param value
+ * @return
+ */
 /* Factory method to return a set that *can* hold "value". When the object has
  * an integer-encodable value, an intset will be returned. Otherwise a regular
  * hash table. */
@@ -45,6 +50,12 @@ robj *setTypeCreate(sds value) {
     return createSetObject();
 }
 
+/**
+ * 新增
+ * @param subject
+ * @param value
+ * @return
+ */
 /* Add the specified value into a set.
  *
  * If the value was already member of the set, nothing is done and 0 is
