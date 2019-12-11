@@ -34,6 +34,13 @@
  * Hash type API
  *----------------------------------------------------------------------------*/
 
+/**
+ * 检查某一范围的元素大小, 判断是否需要转换，如果需要，则转换
+ * @param o
+ * @param argv
+ * @param start
+ * @param end
+ */
 /* Check the length of a number of objects to see if we need to convert a
  * ziplist to a real hash. Note that we only check string encoded objects
  * as their string length can be queried in constant time. */
@@ -52,6 +59,15 @@ void hashTypeTryConversion(robj *o, robj **argv, int start, int end) {
     }
 }
 
+/**
+ * ziplist编码hash获取field元素
+ * @param o
+ * @param field
+ * @param vstr
+ * @param vlen
+ * @param vll
+ * @return
+ */
 /* Get the value from a ziplist encoded hash, identified by field.
  * Returns -1 when the field cannot be found. */
 int hashTypeGetFromZiplist(robj *o, sds field,
@@ -84,6 +100,12 @@ int hashTypeGetFromZiplist(robj *o, sds field,
     return -1;
 }
 
+/**
+ * hash编码hash获取field元素
+ * @param o
+ * @param field
+ * @return
+ */
 /* Get the value from a hash table encoded hash, identified by field.
  * Returns NULL when the field cannot be found, otherwise the SDS value
  * is returned. */
@@ -97,6 +119,15 @@ sds hashTypeGetFromHashTable(robj *o, sds field) {
     return dictGetVal(de);
 }
 
+/**
+ * hash获取field元素
+ * @param o
+ * @param field
+ * @param vstr
+ * @param vlen
+ * @param vll
+ * @return
+ */
 /* Higher level function of hashTypeGet*() that returns the hash value
  * associated with the specified field. If the field is found C_OK
  * is returned, otherwise C_ERR. The returned object is returned by
@@ -124,6 +155,12 @@ int hashTypeGetValue(robj *o, sds field, unsigned char **vstr, unsigned int *vle
     return C_ERR;
 }
 
+/**
+ * hash获取field元素对象
+ * @param o
+ * @param field
+ * @return
+ */
 /* Like hashTypeGetValue() but returns a Redis object, which is useful for
  * interaction with the hash type outside t_hash.c.
  * The function returns NULL if the field is not found in the hash. Otherwise
@@ -138,6 +175,12 @@ robj *hashTypeGetValueObject(robj *o, sds field) {
     else return createStringObjectFromLongLong(vll);
 }
 
+/**
+ * hash获取field元素长度
+ * @param o
+ * @param field
+ * @return
+ */
 /* Higher level function using hashTypeGet*() to return the length of the
  * object associated with the requested field, or 0 if the field does not
  * exist. */
@@ -161,6 +204,12 @@ size_t hashTypeGetValueLength(robj *o, sds field) {
     return len;
 }
 
+/**
+ * hash判断field是否存在
+ * @param o
+ * @param field
+ * @return
+ */
 /* Test if the specified field exists in the given hash. Returns 1 if the field
  * exists, and 0 when it doesn't. */
 int hashTypeExists(robj *o, sds field) {
@@ -199,6 +248,14 @@ int hashTypeExists(robj *o, sds field) {
 #define HASH_SET_TAKE_FIELD (1<<0)
 #define HASH_SET_TAKE_VALUE (1<<1)
 #define HASH_SET_COPY 0
+/**
+ * hash添加添加元素,存在则覆盖。 插入返回0 更新返回1
+ * @param o
+ * @param field
+ * @param value
+ * @param flags 是否拷贝key或者value
+ * @return
+ */
 int hashTypeSet(robj *o, sds field, sds value, int flags) {
     int update = 0;
 
@@ -209,8 +266,10 @@ int hashTypeSet(robj *o, sds field, sds value, int flags) {
         fptr = ziplistIndex(zl, ZIPLIST_HEAD);
         if (fptr != NULL) {
             fptr = ziplistFind(fptr, (unsigned char*)field, sdslen(field), 1);
+            //field存在
             if (fptr != NULL) {
                 /* Grab pointer to the value (fptr points to the field) */
+                //value为field下一个entry
                 vptr = ziplistNext(zl, fptr);
                 serverAssert(vptr != NULL);
                 update = 1;
@@ -224,7 +283,9 @@ int hashTypeSet(robj *o, sds field, sds value, int flags) {
             }
         }
 
+        //非更新
         if (!update) {
+            //尾部插入key和value
             /* Push new field/value pair onto the tail of the ziplist */
             zl = ziplistPush(zl, (unsigned char*)field, sdslen(field),
                     ZIPLIST_TAIL);
@@ -234,6 +295,7 @@ int hashTypeSet(robj *o, sds field, sds value, int flags) {
         o->ptr = zl;
 
         /* Check if the ziplist needs to be converted to a hash table */
+        //如果ziplist长度超过配置的max-entries，则转换类型
         if (hashTypeLength(o) > server.hash_max_ziplist_entries)
             hashTypeConvert(o, OBJ_ENCODING_HT);
     } else if (o->encoding == OBJ_ENCODING_HT) {
@@ -276,6 +338,12 @@ int hashTypeSet(robj *o, sds field, sds value, int flags) {
 
 /* Delete an element from a hash.
  * Return 1 on deleted and 0 on not found. */
+/**
+ * hash删除元素
+ * @param o
+ * @param field
+ * @return
+ */
 int hashTypeDelete(robj *o, sds field) {
     int deleted = 0;
 
@@ -308,6 +376,11 @@ int hashTypeDelete(robj *o, sds field) {
 }
 
 /* Return the number of elements in a hash. */
+/**
+ * hash类型长度
+ * @param o
+ * @return
+ */
 unsigned long hashTypeLength(const robj *o) {
     unsigned long length = ULONG_MAX;
 
@@ -321,6 +394,11 @@ unsigned long hashTypeLength(const robj *o) {
     return length;
 }
 
+/**
+ * hash类型迭代器初始化
+ * @param subject
+ * @return
+ */
 hashTypeIterator *hashTypeInitIterator(robj *subject) {
     hashTypeIterator *hi = zmalloc(sizeof(hashTypeIterator));
     hi->subject = subject;
@@ -337,12 +415,21 @@ hashTypeIterator *hashTypeInitIterator(robj *subject) {
     return hi;
 }
 
+/**
+ * hash类型释放迭代器
+ * @param hi
+ */
 void hashTypeReleaseIterator(hashTypeIterator *hi) {
     if (hi->encoding == OBJ_ENCODING_HT)
         dictReleaseIterator(hi->di);
     zfree(hi);
 }
 
+/**
+ * 返回hash类型下一个迭代器
+ * @param hi
+ * @return
+ */
 /* Move to the next entry in the hash. Return C_OK when the next entry
  * could be found and C_ERR when the iterator reaches the end. */
 int hashTypeNext(hashTypeIterator *hi) {
@@ -356,16 +443,19 @@ int hashTypeNext(hashTypeIterator *hi) {
 
         if (fptr == NULL) {
             /* Initialize cursor */
+            //初始化指针
             serverAssert(vptr == NULL);
             fptr = ziplistIndex(zl, 0);
         } else {
             /* Advance cursor */
             serverAssert(vptr != NULL);
+            //下一个指针为value指针的下一个entry
             fptr = ziplistNext(zl, vptr);
         }
         if (fptr == NULL) return C_ERR;
 
         /* Grab pointer to the value (fptr points to the field) */
+        //域指针的下一个entry为值指针
         vptr = ziplistNext(zl, fptr);
         serverAssert(vptr != NULL);
 
@@ -380,6 +470,14 @@ int hashTypeNext(hashTypeIterator *hi) {
     return C_OK;
 }
 
+/**
+ * 获取ziplist类型hash当前当前迭代器key或value
+ * @param hi
+ * @param what
+ * @param vstr
+ * @param vlen
+ * @param vll
+ */
 /* Get the field or value at iterator cursor, for an iterator on a hash value
  * encoded as a ziplist. Prototype is similar to `hashTypeGetFromZiplist`. */
 void hashTypeCurrentFromZiplist(hashTypeIterator *hi, int what,
@@ -403,6 +501,12 @@ void hashTypeCurrentFromZiplist(hashTypeIterator *hi, int what,
 /* Get the field or value at iterator cursor, for an iterator on a hash value
  * encoded as a hash table. Prototype is similar to
  * `hashTypeGetFromHashTable`. */
+/**
+ * hash编码hash返回当前key或value
+ * @param hi
+ * @param what
+ * @return
+ */
 sds hashTypeCurrentFromHashTable(hashTypeIterator *hi, int what) {
     serverAssert(hi->encoding == OBJ_ENCODING_HT);
 
@@ -413,6 +517,14 @@ sds hashTypeCurrentFromHashTable(hashTypeIterator *hi, int what) {
     }
 }
 
+/**
+ * hash类型迭代器当前元素
+ * @param hi
+ * @param what
+ * @param vstr
+ * @param vlen
+ * @param vll
+ */
 /* Higher level function of hashTypeCurrent*() that returns the hash value
  * at current iterator position.
  *
@@ -436,6 +548,12 @@ void hashTypeCurrentObject(hashTypeIterator *hi, int what, unsigned char **vstr,
     }
 }
 
+/**
+ * 返回迭代器当前元素（key或value）
+ * @param hi
+ * @param what
+ * @return
+ */
 /* Return the key or value at the current iterator position as a new
  * SDS string. */
 sds hashTypeCurrentObjectNewSds(hashTypeIterator *hi, int what) {
@@ -448,6 +566,12 @@ sds hashTypeCurrentObjectNewSds(hashTypeIterator *hi, int what) {
     return sdsfromlonglong(vll);
 }
 
+/**
+ * 创建或查找一个hash类型key
+ * @param c
+ * @param key
+ * @return
+ */
 robj *hashTypeLookupWriteOrCreate(client *c, robj *key) {
     robj *o = lookupKeyWrite(c->db,key);
     if (o == NULL) {
@@ -462,6 +586,11 @@ robj *hashTypeLookupWriteOrCreate(client *c, robj *key) {
     return o;
 }
 
+/**
+ * hash类型ziplist转换
+ * @param o
+ * @param enc
+ */
 void hashTypeConvertZiplist(robj *o, int enc) {
     serverAssert(o->encoding == OBJ_ENCODING_ZIPLIST);
 
@@ -473,12 +602,14 @@ void hashTypeConvertZiplist(robj *o, int enc) {
         dict *dict;
         int ret;
 
+        //初始化迭代器
         hi = hashTypeInitIterator(o);
         dict = dictCreate(&hashDictType, NULL);
 
         while (hashTypeNext(hi) != C_ERR) {
             sds key, value;
 
+            //获取当前key value值
             key = hashTypeCurrentObjectNewSds(hi,OBJ_HASH_KEY);
             value = hashTypeCurrentObjectNewSds(hi,OBJ_HASH_VALUE);
             ret = dictAdd(dict, key, value);
@@ -497,6 +628,11 @@ void hashTypeConvertZiplist(robj *o, int enc) {
     }
 }
 
+/**
+ * hash类型转换
+ * @param o
+ * @param enc
+ */
 void hashTypeConvert(robj *o, int enc) {
     if (o->encoding == OBJ_ENCODING_ZIPLIST) {
         hashTypeConvertZiplist(o, enc);
@@ -511,12 +647,19 @@ void hashTypeConvert(robj *o, int enc) {
  * Hash type commands
  *----------------------------------------------------------------------------*/
 
+/**
+ * hsetnx key field value
+ * 近当field不存在时，写入
+ * @param c
+ */
 void hsetnxCommand(client *c) {
     robj *o;
     if ((o = hashTypeLookupWriteOrCreate(c,c->argv[1])) == NULL) return;
+    //检查field value对象大小，是否需要转换hash编码
     hashTypeTryConversion(o,c->argv,2,3);
 
     if (hashTypeExists(o, c->argv[2]->ptr)) {
+        //存在则返回
         addReply(c, shared.czero);
     } else {
         hashTypeSet(o,c->argv[2]->ptr,c->argv[3]->ptr,HASH_SET_COPY);
@@ -527,6 +670,10 @@ void hsetnxCommand(client *c) {
     }
 }
 
+/**
+ * hset key field value [field value...]
+ * @param c
+ */
 void hsetCommand(client *c) {
     int i, created = 0;
     robj *o;
@@ -546,9 +693,11 @@ void hsetCommand(client *c) {
     char *cmdname = c->argv[0]->ptr;
     if (cmdname[1] == 's' || cmdname[1] == 'S') {
         /* HSET */
+        //hset返回新建field的数量
         addReplyLongLong(c, created);
     } else {
         /* HMSET */
+        //hmset返回ok
         addReply(c, shared.ok);
     }
     signalModifiedKey(c->db,c->argv[1]);
@@ -556,6 +705,11 @@ void hsetCommand(client *c) {
     server.dirty++;
 }
 
+/**
+ * hincby key field increment
+ * key不存在，则创建key，field不存在，则创建，并初始化value为0
+ * @param c
+ */
 void hincrbyCommand(client *c) {
     long long value, incr, oldvalue;
     robj *o;
@@ -566,6 +720,7 @@ void hincrbyCommand(client *c) {
     if (getLongLongFromObjectOrReply(c,c->argv[3],&incr,NULL) != C_OK) return;
     if ((o = hashTypeLookupWriteOrCreate(c,c->argv[1])) == NULL) return;
     if (hashTypeGetValue(o,c->argv[2]->ptr,&vstr,&vlen,&value) == C_OK) {
+        //获取field元素，并转换为长整型，转换失败，则报错返回
         if (vstr) {
             if (string2ll((char*)vstr,vlen,&value) == 0) {
                 addReplyError(c,"hash value is not an integer");
@@ -577,6 +732,7 @@ void hincrbyCommand(client *c) {
     }
 
     oldvalue = value;
+    //检查溢出
     if ((incr < 0 && oldvalue < 0 && incr < (LLONG_MIN-oldvalue)) ||
         (incr > 0 && oldvalue > 0 && incr > (LLONG_MAX-oldvalue))) {
         addReplyError(c,"increment or decrement would overflow");
@@ -591,6 +747,11 @@ void hincrbyCommand(client *c) {
     server.dirty++;
 }
 
+/**
+ * hincrbyfloat key field increment
+ * field不存在，则初始化为0
+ * @param c
+ */
 void hincrbyfloatCommand(client *c) {
     long double value, incr;
     long long ll;
@@ -602,6 +763,7 @@ void hincrbyfloatCommand(client *c) {
     if (getLongDoubleFromObjectOrReply(c,c->argv[3],&incr,NULL) != C_OK) return;
     if ((o = hashTypeLookupWriteOrCreate(c,c->argv[1])) == NULL) return;
     if (hashTypeGetValue(o,c->argv[2]->ptr,&vstr,&vlen,&ll) == C_OK) {
+        //field存在，尝试转换value为long double
         if (vstr) {
             if (string2ld((char*)vstr,vlen,&value) == 0) {
                 addReplyError(c,"hash value is not a float");
@@ -611,6 +773,7 @@ void hincrbyfloatCommand(client *c) {
             value = (long double)ll;
         }
     } else {
+        //filed不存在，初始化value为0
         value = 0;
     }
 
@@ -620,6 +783,7 @@ void hincrbyfloatCommand(client *c) {
         return;
     }
 
+    //long double转换为字符串
     char buf[MAX_LONG_DOUBLE_CHARS];
     int len = ld2string(buf,sizeof(buf),value,1);
     new = sdsnewlen(buf,len);
@@ -632,6 +796,7 @@ void hincrbyfloatCommand(client *c) {
     /* Always replicate HINCRBYFLOAT as an HSET command with the final value
      * in order to make sure that differences in float pricision or formatting
      * will not create differences in replicas or after an AOF restart. */
+    //hincbyfloat同步转化为hset命令，避免double精度的不同
     robj *aux, *newobj;
     aux = createStringObject("HSET",4);
     newobj = createRawStringObject(buf,len);
@@ -641,6 +806,12 @@ void hincrbyfloatCommand(client *c) {
     decrRefCount(newobj);
 }
 
+/**
+ * 输出hash field元素
+ * @param c
+ * @param o
+ * @param field
+ */
 static void addHashFieldToReply(client *c, robj *o, sds field) {
     int ret;
 
@@ -676,6 +847,10 @@ static void addHashFieldToReply(client *c, robj *o, sds field) {
     }
 }
 
+/**
+ * hget key field
+ * @param c
+ */
 void hgetCommand(client *c) {
     robj *o;
 
@@ -685,6 +860,10 @@ void hgetCommand(client *c) {
     addHashFieldToReply(c, o, c->argv[2]->ptr);
 }
 
+/**
+ * hmget key field [field...]
+ * @param c
+ */
 void hmgetCommand(client *c) {
     robj *o;
     int i;
@@ -703,6 +882,10 @@ void hmgetCommand(client *c) {
     }
 }
 
+/**
+ * hdel key field[field...]
+ * @param c
+ */
 void hdelCommand(client *c) {
     robj *o;
     int j, deleted = 0, keyremoved = 0;
@@ -713,6 +896,7 @@ void hdelCommand(client *c) {
     for (j = 2; j < c->argc; j++) {
         if (hashTypeDelete(o,c->argv[j]->ptr)) {
             deleted++;
+            //hash长度为0，则删除key
             if (hashTypeLength(o) == 0) {
                 dbDelete(c->db,c->argv[1]);
                 keyremoved = 1;
@@ -728,9 +912,15 @@ void hdelCommand(client *c) {
                                 c->db->id);
         server.dirty += deleted;
     }
+    //返回删除field元素的数量
     addReplyLongLong(c,deleted);
 }
 
+/**
+ * hlen key
+ * 返回field的数量
+ * @param c
+ */
 void hlenCommand(client *c) {
     robj *o;
 
@@ -740,6 +930,11 @@ void hlenCommand(client *c) {
     addReplyLongLong(c,hashTypeLength(o));
 }
 
+/**
+ * hstrlen key filed
+ * 返回key的field元素的长度
+ * @param c
+ */
 void hstrlenCommand(client *c) {
     robj *o;
 
@@ -748,6 +943,12 @@ void hstrlenCommand(client *c) {
     addReplyLongLong(c,hashTypeGetValueLength(o,c->argv[2]->ptr));
 }
 
+/**
+ * 输出hash迭代器当前元素 key或value
+ * @param c
+ * @param hi
+ * @param what
+ */
 static void addHashIteratorCursorToReply(client *c, hashTypeIterator *hi, int what) {
     if (hi->encoding == OBJ_ENCODING_ZIPLIST) {
         unsigned char *vstr = NULL;
@@ -767,6 +968,11 @@ static void addHashIteratorCursorToReply(client *c, hashTypeIterator *hi, int wh
     }
 }
 
+/**
+ * hgetall 通用方法
+ * @param c
+ * @param flags
+ */
 void genericHgetallCommand(client *c, int flags) {
     robj *o;
     hashTypeIterator *hi;
@@ -777,7 +983,9 @@ void genericHgetallCommand(client *c, int flags) {
 
     /* We return a map if the user requested keys and values, like in the
      * HGETALL case. Otherwise to use a flat array makes more sense. */
+    //field数量
     length = hashTypeLength(o);
+    //同时返回key value
     if (flags & OBJ_HASH_KEY && flags & OBJ_HASH_VALUE) {
         addReplyMapLen(c, length);
     } else {
@@ -803,18 +1011,34 @@ void genericHgetallCommand(client *c, int flags) {
     serverAssert(count == length);
 }
 
+/**
+ * hkeys key
+ * @param c
+ */
 void hkeysCommand(client *c) {
     genericHgetallCommand(c,OBJ_HASH_KEY);
 }
 
+/**
+ * hvals key
+ * @param c
+ */
 void hvalsCommand(client *c) {
     genericHgetallCommand(c,OBJ_HASH_VALUE);
 }
 
+/**
+ * hgetall key
+ * @param c
+ */
 void hgetallCommand(client *c) {
     genericHgetallCommand(c,OBJ_HASH_KEY|OBJ_HASH_VALUE);
 }
 
+/**
+ * hexists key field
+ * @param c
+ */
 void hexistsCommand(client *c) {
     robj *o;
     if ((o = lookupKeyReadOrReply(c,c->argv[1],shared.czero)) == NULL ||
@@ -823,6 +1047,10 @@ void hexistsCommand(client *c) {
     addReply(c, hashTypeExists(o,c->argv[2]->ptr) ? shared.cone : shared.czero);
 }
 
+/**
+ * hscan key cursor [match pattern] [count count]
+ * @param c
+ */
 void hscanCommand(client *c) {
     robj *o;
     unsigned long cursor;

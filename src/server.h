@@ -1543,13 +1543,13 @@ typedef struct {
  * not both are required, store pointers in the iterator to avoid
  * unnecessary memory allocation for fields/values. */
 typedef struct {
-    robj *subject;
-    int encoding;
+    robj *subject; //指向hash对象
+    int encoding; //编码类型
 
-    unsigned char *fptr, *vptr;
+    unsigned char *fptr, *vptr; //用于迭代ziplist结构， 域指针和值指针
 
-    dictIterator *di;
-    dictEntry *de;
+    dictIterator *di; //字典迭代器
+    dictEntry *de; //指向当前字典元素
 } hashTypeIterator;
 
 #include "stream.h"  /* Stream data type header file. */
