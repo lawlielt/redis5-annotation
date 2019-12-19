@@ -663,6 +663,7 @@ static int zslParseRange(robj *min, robj *max, zrangespec *spec) {
     } else {
         if (((char*)min->ptr)[0] == '(') {
             spec->min = strtod((char*)min->ptr+1,&eptr);
+            //非浮点数，则返回错误
             if (eptr[0] != '\0' || isnan(spec->min)) return C_ERR;
             spec->minex = 1;
         } else {
@@ -911,6 +912,11 @@ zskiplistNode *zslLastInLexRange(zskiplist *zsl, zlexrangespec *range) {
  * Ziplist-backed sorted set API
  *----------------------------------------------------------------------------*/
 
+/**
+ * zset的ziplist编码score获取
+ * @param sptr
+ * @return
+ */
 double zzlGetScore(unsigned char *sptr) {
     unsigned char *vstr;
     unsigned int vlen;
@@ -932,6 +938,11 @@ double zzlGetScore(unsigned char *sptr) {
     return score;
 }
 
+/**
+ * ziplist获取元素
+ * @param sptr
+ * @return
+ */
 /* Return a ziplist element as an SDS string. */
 sds ziplistGetObject(unsigned char *sptr) {
     unsigned char *vstr;
@@ -948,6 +959,13 @@ sds ziplistGetObject(unsigned char *sptr) {
     }
 }
 
+/**
+ * zset的ziplist元素比较
+ * @param eptr
+ * @param cstr
+ * @param clen
+ * @return
+ */
 /* Compare element in sorted set with given element. */
 int zzlCompareElements(unsigned char *eptr, unsigned char *cstr, unsigned int clen) {
     unsigned char *vstr;
@@ -959,28 +977,43 @@ int zzlCompareElements(unsigned char *eptr, unsigned char *cstr, unsigned int cl
     serverAssert(ziplistGet(eptr,&vstr,&vlen,&vlong));
     if (vstr == NULL) {
         /* Store string representation of long long in buf. */
+        //long long转换为string
         vlen = ll2string((char*)vbuf,sizeof(vbuf),vlong);
         vstr = vbuf;
     }
 
+    //优先比较字符，字符一致，比较长短
     minlen = (vlen < clen) ? vlen : clen;
     cmp = memcmp(vstr,cstr,minlen);
     if (cmp == 0) return vlen-clen;
     return cmp;
 }
 
+/**
+ * ziplist编码zset长度
+ * @param zl
+ * @return
+ */
 unsigned int zzlLength(unsigned char *zl) {
     return ziplistLen(zl)/2;
 }
 
+/**
+ * 获取sptr下一个节点的ele和score
+ * @param zl
+ * @param eptr
+ * @param sptr
+ */
 /* Move to next entry based on the values in eptr and sptr. Both are set to
  * NULL when there is no next entry. */
 void zzlNext(unsigned char *zl, unsigned char **eptr, unsigned char **sptr) {
     unsigned char *_eptr, *_sptr;
     serverAssert(*eptr != NULL && *sptr != NULL);
 
+    //获取spr节点的下一个节点
     _eptr = ziplistNext(zl,*sptr);
     if (_eptr != NULL) {
+        //score为ele的下一个节点
         _sptr = ziplistNext(zl,_eptr);
         serverAssert(_sptr != NULL);
     } else {
@@ -992,14 +1025,22 @@ void zzlNext(unsigned char *zl, unsigned char **eptr, unsigned char **sptr) {
     *sptr = _sptr;
 }
 
+/**
+ * 获取eptr的前一个节点的ele和score
+ * @param zl
+ * @param eptr
+ * @param sptr
+ */
 /* Move to the previous entry based on the values in eptr and sptr. Both are
  * set to NULL when there is no next entry. */
 void zzlPrev(unsigned char *zl, unsigned char **eptr, unsigned char **sptr) {
     unsigned char *_eptr, *_sptr;
     serverAssert(*eptr != NULL && *sptr != NULL);
 
+    //score为ele的前一个节点
     _sptr = ziplistPrev(zl,*eptr);
     if (_sptr != NULL) {
+        //ele为score的前一个节点
         _eptr = ziplistPrev(zl,_sptr);
         serverAssert(_eptr != NULL);
     } else {
@@ -1011,6 +1052,12 @@ void zzlPrev(unsigned char *zl, unsigned char **eptr, unsigned char **sptr) {
     *sptr = _sptr;
 }
 
+/**
+ * 判断是否包含范围内元素
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Returns if there is a part of the zset is in range. Should only be used
  * internally by zzlFirstInRange and zzlLastInRange. */
 int zzlIsInRange(unsigned char *zl, zrangespec *range) {
@@ -1022,21 +1069,32 @@ int zzlIsInRange(unsigned char *zl, zrangespec *range) {
             (range->min == range->max && (range->minex || range->maxex)))
         return 0;
 
+    //获取最后一个score
     p = ziplistIndex(zl,-1); /* Last score. */
     if (p == NULL) return 0; /* Empty sorted set */
+    //获取这个节点score
     score = zzlGetScore(p);
+    //最大小于最小
     if (!zslValueGteMin(score,range))
         return 0;
 
+    //获取第一个score
     p = ziplistIndex(zl,1); /* First score. */
     serverAssert(p != NULL);
     score = zzlGetScore(p);
+    //最小大于最大
     if (!zslValueLteMax(score,range))
         return 0;
 
     return 1;
 }
 
+/**
+ * ziplist编码zset查找第一个在范围内的元素
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Find pointer to the first element contained in the specified range.
  * Returns NULL when no element is contained in the range. */
 unsigned char *zzlFirstInRange(unsigned char *zl, zrangespec *range) {
@@ -1044,6 +1102,7 @@ unsigned char *zzlFirstInRange(unsigned char *zl, zrangespec *range) {
     double score;
 
     /* If everything is out of range, return early. */
+    //如果整个都不在范围内，则退出
     if (!zzlIsInRange(zl,range)) return NULL;
 
     while (eptr != NULL) {
@@ -1051,6 +1110,7 @@ unsigned char *zzlFirstInRange(unsigned char *zl, zrangespec *range) {
         serverAssert(sptr != NULL);
 
         score = zzlGetScore(sptr);
+        // min < score < max
         if (zslValueGteMin(score,range)) {
             /* Check if score <= max. */
             if (zslValueLteMax(score,range))
@@ -1065,6 +1125,12 @@ unsigned char *zzlFirstInRange(unsigned char *zl, zrangespec *range) {
     return NULL;
 }
 
+/**
+ * ziplist编码zset查找最后一个在范围内的元素
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Find pointer to the last element contained in the specified range.
  * Returns NULL when no element is contained in the range. */
 unsigned char *zzlLastInRange(unsigned char *zl, zrangespec *range) {
@@ -1072,6 +1138,7 @@ unsigned char *zzlLastInRange(unsigned char *zl, zrangespec *range) {
     double score;
 
     /* If everything is out of range, return early. */
+    //如果整体不在范围内，则退出
     if (!zzlIsInRange(zl,range)) return NULL;
 
     while (eptr != NULL) {
@@ -1098,6 +1165,12 @@ unsigned char *zzlLastInRange(unsigned char *zl, zrangespec *range) {
     return NULL;
 }
 
+/**
+ * ziplist编码zset p指针元素是否大于等于最小
+ * @param p
+ * @param spec
+ * @return
+ */
 int zzlLexValueGteMin(unsigned char *p, zlexrangespec *spec) {
     sds value = ziplistGetObject(p);
     int res = zslLexValueGteMin(value,spec);
@@ -1105,6 +1178,12 @@ int zzlLexValueGteMin(unsigned char *p, zlexrangespec *spec) {
     return res;
 }
 
+/**
+ * ziplist-zset p指针元素是否小于等于最大值
+ * @param p
+ * @param spec
+ * @return
+ */
 int zzlLexValueLteMax(unsigned char *p, zlexrangespec *spec) {
     sds value = ziplistGetObject(p);
     int res = zslLexValueLteMax(value,spec);
@@ -1112,6 +1191,12 @@ int zzlLexValueLteMax(unsigned char *p, zlexrangespec *spec) {
     return res;
 }
 
+/**
+ * ziplist-zset 元素是否属于某个范围
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Returns if there is a part of the zset is in range. Should only be used
  * internally by zzlFirstInRange and zzlLastInRange. */
 int zzlIsInLexRange(unsigned char *zl, zlexrangespec *range) {
@@ -1135,6 +1220,12 @@ int zzlIsInLexRange(unsigned char *zl, zlexrangespec *range) {
     return 1;
 }
 
+/**
+ * ziplist-zset返回范围内的第一个元素
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Find pointer to the first element contained in the specified lex range.
  * Returns NULL when no element is contained in the range. */
 unsigned char *zzlFirstInLexRange(unsigned char *zl, zlexrangespec *range) {
@@ -1160,6 +1251,12 @@ unsigned char *zzlFirstInLexRange(unsigned char *zl, zlexrangespec *range) {
     return NULL;
 }
 
+/**
+ * ziplist-zset 返回最后一个在范围内的元素
+ * @param zl
+ * @param range
+ * @return
+ */
 /* Find pointer to the last element contained in the specified lex range.
  * Returns NULL when no element is contained in the range. */
 unsigned char *zzlLastInLexRange(unsigned char *zl, zlexrangespec *range) {
@@ -1188,6 +1285,13 @@ unsigned char *zzlLastInLexRange(unsigned char *zl, zlexrangespec *range) {
     return NULL;
 }
 
+/**
+ * ziplist-zset 查找等于ele的元素
+ * @param zl
+ * @param ele
+ * @param score
+ * @return
+ */
 unsigned char *zzlFind(unsigned char *zl, sds ele, double *score) {
     unsigned char *eptr = ziplistIndex(zl,0), *sptr;
 
@@ -1207,29 +1311,46 @@ unsigned char *zzlFind(unsigned char *zl, sds ele, double *score) {
     return NULL;
 }
 
+/**
+ * ziplist-zset 删除eptr指针元素
+ * @param zl
+ * @param eptr
+ * @return
+ */
 /* Delete (element,score) pair from ziplist. Use local copy of eptr because we
  * don't want to modify the one given as argument. */
 unsigned char *zzlDelete(unsigned char *zl, unsigned char *eptr) {
     unsigned char *p = eptr;
 
     /* TODO: add function to ziplist API to delete N elements from offset. */
+    //删除p指针元素，并把p指向下一个元素
     zl = ziplistDelete(zl,&p);
     zl = ziplistDelete(zl,&p);
     return zl;
 }
 
+/**
+ * ziplist-zset eptr指针插入
+ * @param zl
+ * @param eptr
+ * @param ele
+ * @param score
+ * @return
+ */
 unsigned char *zzlInsertAt(unsigned char *zl, unsigned char *eptr, sds ele, double score) {
     unsigned char *sptr;
     char scorebuf[128];
     int scorelen;
     size_t offset;
 
+    //socre转为str
     scorelen = d2string(scorebuf,sizeof(scorebuf),score);
     if (eptr == NULL) {
         zl = ziplistPush(zl,(unsigned char*)ele,sdslen(ele),ZIPLIST_TAIL);
         zl = ziplistPush(zl,(unsigned char*)scorebuf,scorelen,ZIPLIST_TAIL);
     } else {
         /* Keep offset relative to zl, as it might be re-allocated. */
+        //插入元素，并保存offset，socre存入插入元素的下一个元素
         offset = eptr-zl;
         zl = ziplistInsert(zl,eptr,(unsigned char*)ele,sdslen(ele));
         eptr = zl+offset;
@@ -1241,6 +1362,14 @@ unsigned char *zzlInsertAt(unsigned char *zl, unsigned char *eptr, sds ele, doub
     return zl;
 }
 
+/**
+ * ziplist-zset插入
+ * 假设元素不重复
+ * @param zl
+ * @param ele
+ * @param score
+ * @return
+ */
 /* Insert (element,score) pair in ziplist. This function assumes the element is
  * not yet present in the list. */
 unsigned char *zzlInsert(unsigned char *zl, sds ele, double score) {
@@ -1256,10 +1385,12 @@ unsigned char *zzlInsert(unsigned char *zl, sds ele, double score) {
             /* First element with score larger than score for element to be
              * inserted. This means we should take its spot in the list to
              * maintain ordering. */
+            //插入到第一个大于它的score之前
             zl = zzlInsertAt(zl,eptr,ele,score);
             break;
         } else if (s == score) {
             /* Ensure lexicographical ordering for elements. */
+            //score一致，则判断ele
             if (zzlCompareElements(eptr,(unsigned char*)ele,sdslen(ele)) > 0) {
                 zl = zzlInsertAt(zl,eptr,ele,score);
                 break;
@@ -1271,11 +1402,19 @@ unsigned char *zzlInsert(unsigned char *zl, sds ele, double score) {
     }
 
     /* Push on tail of list when it was not yet inserted. */
+    //没找到，放到末尾
     if (eptr == NULL)
         zl = zzlInsertAt(zl,NULL,ele,score);
     return zl;
 }
 
+/**
+ * ziplist-zset 删除score指定范围内元素
+ * @param zl
+ * @param range
+ * @param deleted
+ * @return
+ */
 unsigned char *zzlDeleteRangeByScore(unsigned char *zl, zrangespec *range, unsigned long *deleted) {
     unsigned char *eptr, *sptr;
     double score;
@@ -1283,6 +1422,7 @@ unsigned char *zzlDeleteRangeByScore(unsigned char *zl, zrangespec *range, unsig
 
     if (deleted != NULL) *deleted = 0;
 
+    //不存在范围内的元素，则删除
     eptr = zzlFirstInRange(zl,range);
     if (eptr == NULL) return zl;
 
@@ -1290,12 +1430,14 @@ unsigned char *zzlDeleteRangeByScore(unsigned char *zl, zrangespec *range, unsig
      * byte and ziplistNext will return NULL. */
     while ((sptr = ziplistNext(zl,eptr)) != NULL) {
         score = zzlGetScore(sptr);
+        //小于最大值，则删除
         if (zslValueLteMax(score,range)) {
             /* Delete both the element and the score. */
             zl = ziplistDelete(zl,&eptr);
             zl = ziplistDelete(zl,&eptr);
             num++;
         } else {
+            //否则，退出循环
             /* No longer in range. */
             break;
         }
@@ -1305,6 +1447,13 @@ unsigned char *zzlDeleteRangeByScore(unsigned char *zl, zrangespec *range, unsig
     return zl;
 }
 
+/**
+ * ziplist-zset 删除指定范围内元素
+ * @param zl
+ * @param range
+ * @param deleted
+ * @return
+ */
 unsigned char *zzlDeleteRangeByLex(unsigned char *zl, zlexrangespec *range, unsigned long *deleted) {
     unsigned char *eptr, *sptr;
     unsigned long num = 0;
@@ -1332,6 +1481,15 @@ unsigned char *zzlDeleteRangeByLex(unsigned char *zl, zlexrangespec *range, unsi
     return zl;
 }
 
+/**
+ * ziplist-zset 通过rank删除
+ * 1-based
+ * @param zl
+ * @param start
+ * @param end
+ * @param deleted
+ * @return
+ */
 /* Delete all the elements with rank between start and end from the skiplist.
  * Start and end are inclusive. Note that start and end need to be 1-based */
 unsigned char *zzlDeleteRangeByRank(unsigned char *zl, unsigned int start, unsigned int end, unsigned long *deleted) {
@@ -1345,6 +1503,11 @@ unsigned char *zzlDeleteRangeByRank(unsigned char *zl, unsigned int start, unsig
  * Common sorted set API
  *----------------------------------------------------------------------------*/
 
+/**
+ * zset长度
+ * @param zobj
+ * @return
+ */
 unsigned long zsetLength(const robj *zobj) {
     unsigned long length = 0;
     if (zobj->encoding == OBJ_ENCODING_ZIPLIST) {
@@ -1357,6 +1520,11 @@ unsigned long zsetLength(const robj *zobj) {
     return length;
 }
 
+/**
+ * zset转换
+ * @param zobj
+ * @param encoding
+ */
 void zsetConvert(robj *zobj, int encoding) {
     zset *zs;
     zskiplistNode *node, *next;
@@ -1364,6 +1532,7 @@ void zsetConvert(robj *zobj, int encoding) {
     double score;
 
     if (zobj->encoding == encoding) return;
+    //ziplist转换到skiplist
     if (zobj->encoding == OBJ_ENCODING_ZIPLIST) {
         unsigned char *zl = zobj->ptr;
         unsigned char *eptr, *sptr;
@@ -1385,12 +1554,14 @@ void zsetConvert(robj *zobj, int encoding) {
 
         while (eptr != NULL) {
             score = zzlGetScore(sptr);
+            //获取eptr元素
             serverAssertWithInfo(NULL,zobj,ziplistGet(eptr,&vstr,&vlen,&vlong));
             if (vstr == NULL)
                 ele = sdsfromlonglong(vlong);
             else
                 ele = sdsnewlen((char*)vstr,vlen);
 
+            //skiplist插入
             node = zslInsert(zs->zsl,score,ele);
             serverAssert(dictAdd(zs->dict,ele,&node->score) == DICT_OK);
             zzlNext(zl,&eptr,&sptr);
@@ -1400,6 +1571,7 @@ void zsetConvert(robj *zobj, int encoding) {
         zobj->ptr = zs;
         zobj->encoding = OBJ_ENCODING_SKIPLIST;
     } else if (zobj->encoding == OBJ_ENCODING_SKIPLIST) {
+        //skiplist到ziplist
         unsigned char *zl = ziplistNew();
 
         if (encoding != OBJ_ENCODING_ZIPLIST)
@@ -1408,12 +1580,14 @@ void zsetConvert(robj *zobj, int encoding) {
         /* Approach similar to zslFree(), since we want to free the skiplist at
          * the same time as creating the ziplist. */
         zs = zobj->ptr;
+        //释放dict
         dictRelease(zs->dict);
         node = zs->zsl->header->level[0].forward;
         zfree(zs->zsl->header);
         zfree(zs->zsl);
 
         while (node) {
+            //持续尾节点插入
             zl = zzlInsertAt(zl,NULL,node->ele,node->score);
             next = node->level[0].forward;
             zslFreeNode(node);
@@ -1428,6 +1602,11 @@ void zsetConvert(robj *zobj, int encoding) {
     }
 }
 
+/**
+ * 转换一个zset到ziplist编码
+ * @param zobj
+ * @param maxelelen
+ */
 /* Convert the sorted set object into a ziplist if it is not already a ziplist
  * and if the number of elements and the maximum element size is within the
  * expected ranges. */
@@ -1435,11 +1614,19 @@ void zsetConvertToZiplistIfNeeded(robj *zobj, size_t maxelelen) {
     if (zobj->encoding == OBJ_ENCODING_ZIPLIST) return;
     zset *zset = zobj->ptr;
 
+    //如果长度和元素最大长度符合条件，则转换为ziplist
     if (zset->zsl->length <= server.zset_max_ziplist_entries &&
         maxelelen <= server.zset_max_ziplist_value)
             zsetConvert(zobj,OBJ_ENCODING_ZIPLIST);
 }
 
+/**
+ * 返回member的score值
+ * @param zobj
+ * @param member
+ * @param score
+ * @return
+ */
 /* Return (by reference) the score of the specified member of the sorted set
  * storing it into *score. If the element does not exist C_ERR is returned
  * otherwise C_OK is returned and *score is correctly populated.
@@ -1451,6 +1638,7 @@ int zsetScore(robj *zobj, sds member, double *score) {
         if (zzlFind(zobj->ptr, member, score) == NULL) return C_ERR;
     } else if (zobj->encoding == OBJ_ENCODING_SKIPLIST) {
         zset *zs = zobj->ptr;
+        //直接查找字典
         dictEntry *de = dictFind(zs->dict, member);
         if (de == NULL) return C_ERR;
         *score = *(double*)dictGetVal(de);
@@ -1503,15 +1691,26 @@ int zsetScore(robj *zobj, sds member, double *score) {
  *
  * The function does not take ownership of the 'ele' SDS string, but copies
  * it if needed. */
+/**
+ * zadd key score member
+ * @param zobj
+ * @param score
+ * @param ele
+ * @param flags ZADD_INC ZADD_NX ZADD_XX  ZADD_NAN ZADD_ADDED ZADD_UPDATED ZADD_NOP
+ * @param newscore
+ * @return
+ */
 int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
     /* Turn options into simple to check vars. */
     int incr = (*flags & ZADD_INCR) != 0;
     int nx = (*flags & ZADD_NX) != 0;
     int xx = (*flags & ZADD_XX) != 0;
+    //之后写入flags
     *flags = 0; /* We'll return our response flags. */
     double curscore;
 
     /* NaN as input is an error regardless of all the other parameters. */
+    //非法score返回
     if (isnan(score)) {
         *flags = ZADD_NAN;
         return 0;
@@ -1523,6 +1722,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
 
         if ((eptr = zzlFind(zobj->ptr,ele,&curscore)) != NULL) {
             /* NX? Return, same element already exists. */
+            //key不存在写入，则返回
             if (nx) {
                 *flags |= ZADD_NOP;
                 return 1;
@@ -1535,10 +1735,12 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
                     *flags |= ZADD_NAN;
                     return 0;
                 }
+                //newscore返回修改后的值
                 if (newscore) *newscore = score;
             }
 
             /* Remove and re-insert when score changed. */
+            //score发生变化，则删除再写入
             if (score != curscore) {
                 zobj->ptr = zzlDelete(zobj->ptr,eptr);
                 zobj->ptr = zzlInsert(zobj->ptr,ele,score);
@@ -1549,6 +1751,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
             /* Optimize: check if the element is too large or the list
              * becomes too long *before* executing zzlInsert. */
             zobj->ptr = zzlInsert(zobj->ptr,ele,score);
+            //如果长度或元素大小超过限制，则转换类型
             if (zzlLength(zobj->ptr) > server.zset_max_ziplist_entries ||
                 sdslen(ele) > server.zset_max_ziplist_value)
                 zsetConvert(zobj,OBJ_ENCODING_SKIPLIST);
@@ -1556,6 +1759,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
             *flags |= ZADD_ADDED;
             return 1;
         } else {
+            //存在写入， 则返回
             *flags |= ZADD_NOP;
             return 1;
         }
@@ -1567,6 +1771,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
         de = dictFind(zs->dict,ele);
         if (de != NULL) {
             /* NX? Return, same element already exists. */
+            //不存在写入，则返回
             if (nx) {
                 *flags |= ZADD_NOP;
                 return 1;
@@ -1585,6 +1790,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
 
             /* Remove and re-insert when score changes. */
             if (score != curscore) {
+                //更新score
                 znode = zslUpdateScore(zs->zsl,curscore,ele,score);
                 /* Note that we did not removed the original element from
                  * the hash table representing the sorted set, so we just
@@ -1601,6 +1807,7 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
             if (newscore) *newscore = score;
             return 1;
         } else {
+            //存在写入，则退出
             *flags |= ZADD_NOP;
             return 1;
         }
@@ -1610,6 +1817,12 @@ int zsetAdd(robj *zobj, double score, sds ele, int *flags, double *newscore) {
     return 0; /* Never reached. */
 }
 
+/**
+ * zset del ele
+ * @param zobj
+ * @param ele
+ * @return
+ */
 /* Delete the element 'ele' from the sorted set, returning 1 if the element
  * existed and was deleted, 0 otherwise (the element was not there). */
 int zsetDel(robj *zobj, sds ele) {
@@ -1635,12 +1848,14 @@ int zsetDel(robj *zobj, sds ele) {
              * actually releases the SDS string representing the element,
              * which is shared between the skiplist and the hash table, so
              * we need to delete from the skiplist as the final step. */
+            //释放dict元素。 skip会释放ele，所以dict先操作
             dictFreeUnlinkedEntry(zs->dict,de);
 
             /* Delete from skiplist. */
             int retval = zslDelete(zs->zsl,score,ele,NULL);
             serverAssert(retval);
 
+            //是否需要rehash
             if (htNeedsResize(zs->dict)) dictResize(zs->dict);
             return 1;
         }
@@ -1650,6 +1865,13 @@ int zsetDel(robj *zobj, sds ele) {
     return 0; /* No such element found. */
 }
 
+/**
+ * zsetrank ele ele元素的rank排名 0-based reverse是否从大到小
+ * @param zobj
+ * @param ele
+ * @param reverse
+ * @return
+ */
 /* Given a sorted set object returns the 0-based rank of the object or
  * -1 if the object does not exist.
  *
@@ -1665,6 +1887,7 @@ long zsetRank(robj *zobj, sds ele, int reverse) {
     unsigned long llen;
     unsigned long rank;
 
+    //zset长度
     llen = zsetLength(zobj);
 
     if (zobj->encoding == OBJ_ENCODING_ZIPLIST) {
@@ -1720,6 +1943,11 @@ long zsetRank(robj *zobj, sds ele, int reverse) {
  * Sorted set commands
  *----------------------------------------------------------------------------*/
 
+/**
+ * 通用zadd方法
+ * @param c
+ * @param flags
+ */
 /* This generic command implements both ZADD and ZINCRBY. */
 void zaddGenericCommand(client *c, int flags) {
     static char *nanerr = "resulting score is not a number (NaN)";
@@ -1758,6 +1986,7 @@ void zaddGenericCommand(client *c, int flags) {
 
     /* After the options, we expect to have an even number of args, since
      * we expect any number of score-element pairs. */
+    //剩余参数必须是偶数个
     elements = c->argc-scoreidx;
     if (elements % 2 || !elements) {
         addReply(c,shared.syntaxerr);
@@ -1766,12 +1995,14 @@ void zaddGenericCommand(client *c, int flags) {
     elements /= 2; /* Now this holds the number of score-element pairs. */
 
     /* Check for incompatible options. */
+    //nx和xx不同同时设置
     if (nx && xx) {
         addReplyError(c,
             "XX and NX options at the same time are not compatible");
         return;
     }
 
+    //incr只能操作一个ele
     if (incr && elements > 1) {
         addReplyError(c,
             "INCR option supports a single increment-element pair");
@@ -1781,6 +2012,9 @@ void zaddGenericCommand(client *c, int flags) {
     /* Start parsing all the scores, we need to emit any syntax error
      * before executing additions to the sorted set, as the command should
      * either execute fully or nothing at all. */
+    /**
+     * 开始解析所有score值，一个错误，则直接退出。保证全部执行，或者全部不执行
+     */
     scores = zmalloc(sizeof(double)*elements);
     for (j = 0; j < elements; j++) {
         if (getDoubleFromObjectOrReply(c,c->argv[scoreidx+j*2],&scores[j],NULL)
@@ -1790,7 +2024,9 @@ void zaddGenericCommand(client *c, int flags) {
     /* Lookup the key and create the sorted set if does not exist. */
     zobj = lookupKeyWrite(c->db,key);
     if (zobj == NULL) {
+        //存在操作，则返回
         if (xx) goto reply_to_client; /* No key + XX option: nothing to do. */
+        //创建那个编码的zset
         if (server.zset_max_ziplist_entries == 0 ||
             server.zset_max_ziplist_value < sdslen(c->argv[scoreidx+1]->ptr))
         {
@@ -1798,6 +2034,7 @@ void zaddGenericCommand(client *c, int flags) {
         } else {
             zobj = createZsetZiplistObject();
         }
+        //添加key
         dbAdd(c->db,key,zobj);
     } else {
         if (zobj->type != OBJ_ZSET) {
@@ -1826,11 +2063,13 @@ void zaddGenericCommand(client *c, int flags) {
 
 reply_to_client:
     if (incr) { /* ZINCRBY or INCR option. */
+        //返回增加之后的score值
         if (processed)
             addReplyDouble(c,score);
         else
             addReplyNull(c);
     } else { /* ZADD. */
+        //ch 返回新增和更改的值
         addReplyLongLong(c,ch ? added+updated : added);
     }
 
@@ -1843,24 +2082,38 @@ cleanup:
     }
 }
 
+/**
+ * zadd key [nx] [xx] [ch] [incr] score member [score member...]
+ * @param c
+ */
 void zaddCommand(client *c) {
     zaddGenericCommand(c,ZADD_NONE);
 }
 
+/**
+ * zincr key increment member
+ * @param c
+ */
 void zincrbyCommand(client *c) {
     zaddGenericCommand(c,ZADD_INCR);
 }
 
+/**
+ * zrem key member [member...]
+ * @param c
+ */
 void zremCommand(client *c) {
     robj *key = c->argv[1];
     robj *zobj;
     int deleted = 0, keyremoved = 0, j;
 
+    //key不存在，则返回
     if ((zobj = lookupKeyWriteOrReply(c,key,shared.czero)) == NULL ||
         checkType(c,zobj,OBJ_ZSET)) return;
 
     for (j = 2; j < c->argc; j++) {
         if (zsetDel(zobj,c->argv[j]->ptr)) deleted++;
+        //没有member，则删除key
         if (zsetLength(zobj) == 0) {
             dbDelete(c->db,key);
             keyremoved = 1;
@@ -1875,6 +2128,7 @@ void zremCommand(client *c) {
         signalModifiedKey(c->db,key);
         server.dirty += deleted;
     }
+    //返回已删除的member数量
     addReplyLongLong(c,deleted);
 }
 
@@ -1892,15 +2146,18 @@ void zremrangeGenericCommand(client *c, int rangetype) {
     long start, end, llen;
 
     /* Step 1: Parse the range. */
+    //zrembyrank key start stop
     if (rangetype == ZRANGE_RANK) {
         if ((getLongFromObjectOrReply(c,c->argv[2],&start,NULL) != C_OK) ||
             (getLongFromObjectOrReply(c,c->argv[3],&end,NULL) != C_OK))
             return;
+    //zrembyscore key min max
     } else if (rangetype == ZRANGE_SCORE) {
         if (zslParseRange(c->argv[2],c->argv[3],&range) != C_OK) {
             addReplyError(c,"min or max is not a float");
             return;
         }
+    //zremrangebylex key min max
     } else if (rangetype == ZRANGE_LEX) {
         if (zslParseLexRange(c->argv[2],c->argv[3],&lexrange) != C_OK) {
             addReplyError(c,"min or max not valid string range item");
@@ -1909,10 +2166,12 @@ void zremrangeGenericCommand(client *c, int rangetype) {
     }
 
     /* Step 2: Lookup & range sanity checks if needed. */
+    //key是否存在
     if ((zobj = lookupKeyWriteOrReply(c,key,shared.czero)) == NULL ||
         checkType(c,zobj,OBJ_ZSET)) goto cleanup;
 
     if (rangetype == ZRANGE_RANK) {
+        //计算start， end
         /* Sanitize indexes. */
         llen = zsetLength(zobj);
         if (start < 0) start = llen+start;
@@ -1982,18 +2241,31 @@ cleanup:
     if (rangetype == ZRANGE_LEX) zslFreeLexRange(&lexrange);
 }
 
+/**
+ * zremrangebyscore key min max
+ * @param c
+ */
 void zremrangebyrankCommand(client *c) {
     zremrangeGenericCommand(c,ZRANGE_RANK);
 }
 
+/**
+ * zremrangebyscore key min max
+ * @param c
+ */
 void zremrangebyscoreCommand(client *c) {
     zremrangeGenericCommand(c,ZRANGE_SCORE);
 }
 
+/**
+ * zremrangebylex key min max
+ * @param c
+ */
 void zremrangebylexCommand(client *c) {
     zremrangeGenericCommand(c,ZRANGE_LEX);
 }
 
+//ses or zset 迭代器
 typedef struct {
     robj *subject;
     int type; /* Set, sorted set */
@@ -2002,11 +2274,14 @@ typedef struct {
 
     union {
         /* Set iterators. */
+        //set迭代器
         union _iterset {
+            //整数集合
             struct {
                 intset *is;
                 int ii;
             } is;
+            //dict
             struct {
                 dict *dict;
                 dictIterator *di;
@@ -2015,11 +2290,14 @@ typedef struct {
         } set;
 
         /* Sorted set iterators. */
+        //zset迭代器
         union _iterzset {
+            //ziplist
             struct {
                 unsigned char *zl;
                 unsigned char *eptr, *sptr;
             } zl;
+            //skiplist
             struct {
                 zset *zs;
                 zskiplistNode *node;
@@ -2035,33 +2313,40 @@ typedef struct {
  * we already checked that "ell" holds a long long, or tried to convert another
  * representation into a long long value. When this was successful,
  * OPVAL_VALID_LL is set as well. */
-#define OPVAL_DIRTY_SDS 1
-#define OPVAL_DIRTY_LL 2
-#define OPVAL_VALID_LL 4
+#define OPVAL_DIRTY_SDS 1 //标志zsetopval ele需要清理
+#define OPVAL_DIRTY_LL 2  //sds代表一个long long
+#define OPVAL_VALID_LL 4  //sds代表一个long long，并转换成功
 
 /* Store value retrieved from the iterator. */
 typedef struct {
     int flags;
     unsigned char _buf[32]; /* Private buffer. */
-    sds ele;
-    unsigned char *estr;
-    unsigned int elen;
-    long long ell;
-    double score;
+    sds ele; //set-dict或者zset-skiplist的ele
+    unsigned char *estr; //ziplist的estr值
+    unsigned int elen; //ziplist的estr的长度
+    long long ell; //ziplist或者set-intset的ele
+    double score; //score值
 } zsetopval;
 
 typedef union _iterset iterset;
 typedef union _iterzset iterzset;
 
+/**
+ * 初始化迭代器
+ * @param op
+ */
 void zuiInitIterator(zsetopsrc *op) {
     if (op->subject == NULL)
         return;
 
+    //set
     if (op->type == OBJ_SET) {
         iterset *it = &op->iter.set;
+        //整数集合
         if (op->encoding == OBJ_ENCODING_INTSET) {
             it->is.is = op->subject->ptr;
             it->is.ii = 0;
+        //dict
         } else if (op->encoding == OBJ_ENCODING_HT) {
             it->ht.dict = op->subject->ptr;
             it->ht.di = dictGetIterator(op->subject->ptr);
@@ -2089,6 +2374,10 @@ void zuiInitIterator(zsetopsrc *op) {
     }
 }
 
+/**
+ * 释放迭代器
+ * @param op
+ */
 void zuiClearIterator(zsetopsrc *op) {
     if (op->subject == NULL)
         return;
@@ -2116,6 +2405,11 @@ void zuiClearIterator(zsetopsrc *op) {
     }
 }
 
+/**
+ * 返回迭代器长度
+ * @param op
+ * @return
+ */
 unsigned long zuiLength(zsetopsrc *op) {
     if (op->subject == NULL)
         return 0;
@@ -2143,6 +2437,12 @@ unsigned long zuiLength(zsetopsrc *op) {
     }
 }
 
+/**
+ * 存储当前元素到val，并返回下一个迭代器
+ * @param op
+ * @param val
+ * @return
+ */
 /* Check if the current value is valid. If so, store it in the passed structure
  * and move to the next element. If not valid, this means we have reached the
  * end of the structure and can abort. */
@@ -2150,9 +2450,11 @@ int zuiNext(zsetopsrc *op, zsetopval *val) {
     if (op->subject == NULL)
         return 0;
 
+    //释放上一个sds
     if (val->flags & OPVAL_DIRTY_SDS)
         sdsfree(val->ele);
 
+    //清空zsetopval
     memset(val,0,sizeof(zsetopval));
 
     if (op->type == OBJ_SET) {
@@ -2163,7 +2465,7 @@ int zuiNext(zsetopsrc *op, zsetopval *val) {
             if (!intsetGet(it->is.is,it->is.ii,&ell))
                 return 0;
             val->ell = ell;
-            val->score = 1.0;
+            val->score = 1.0;//集合默认score为1.0
 
             /* Move to next element. */
             it->is.ii++;
@@ -2206,29 +2508,46 @@ int zuiNext(zsetopsrc *op, zsetopval *val) {
     return 1;
 }
 
+/**
+ * 获取zsetopval的long long值
+ * @param val
+ * @return
+ */
 int zuiLongLongFromValue(zsetopval *val) {
     if (!(val->flags & OPVAL_DIRTY_LL)) {
+        //初始化为dirty
         val->flags |= OPVAL_DIRTY_LL;
 
         if (val->ele != NULL) {
+            //转换ele到ell
             if (string2ll(val->ele,sdslen(val->ele),&val->ell))
                 val->flags |= OPVAL_VALID_LL;
         } else if (val->estr != NULL) {
+            //转换estr到ell
             if (string2ll((char*)val->estr,val->elen,&val->ell))
                 val->flags |= OPVAL_VALID_LL;
         } else {
+            //ell已经存在
             /* The long long was already set, flag as valid. */
             val->flags |= OPVAL_VALID_LL;
         }
     }
+    //是否转换成功
     return val->flags & OPVAL_VALID_LL;
 }
 
+/**
+ * 获取zsetopval的sds值
+ * @param val
+ * @return
+ */
 sds zuiSdsFromValue(zsetopval *val) {
     if (val->ele == NULL) {
         if (val->estr != NULL) {
+            //estr到sds
             val->ele = sdsnewlen((char*)val->estr,val->elen);
         } else {
+            //ell到sds
             val->ele = sdsfromlonglong(val->ell);
         }
         val->flags |= OPVAL_DIRTY_SDS;
@@ -2236,30 +2555,46 @@ sds zuiSdsFromValue(zsetopval *val) {
     return val->ele;
 }
 
+/**
+ * 获取zsetopval的新建sds值
+ * @param val
+ * @return
+ */
 /* This is different from zuiSdsFromValue since returns a new SDS string
  * which is up to the caller to free. */
 sds zuiNewSdsFromValue(zsetopval *val) {
     if (val->flags & OPVAL_DIRTY_SDS) {
         /* We have already one to return! */
+        //要清理的，返回，并标志为不清理
         sds ele = val->ele;
         val->flags &= ~OPVAL_DIRTY_SDS;
         val->ele = NULL;
         return ele;
     } else if (val->ele) {
+        //复制
         return sdsdup(val->ele);
     } else if (val->estr) {
+        //estr到sds
         return sdsnewlen((char*)val->estr,val->elen);
     } else {
+        //ell到sds
         return sdsfromlonglong(val->ell);
     }
 }
 
+/**
+ * 返回zsetopval的estr
+ * @param val
+ * @return
+ */
 int zuiBufferFromValue(zsetopval *val) {
     if (val->estr == NULL) {
         if (val->ele != NULL) {
+            //sds到estr
             val->elen = sdslen(val->ele);
             val->estr = (unsigned char*)val->ele;
         } else {
+            //ell到estr
             val->elen = ll2string((char*)val->_buf,sizeof(val->_buf),val->ell);
             val->estr = val->_buf;
         }
@@ -2267,6 +2602,13 @@ int zuiBufferFromValue(zsetopval *val) {
     return 1;
 }
 
+/**
+ * 查找等于val的member，并把score值，存入score
+ * @param op
+ * @param val
+ * @param score
+ * @return
+ */
 /* Find value pointed to by val in the source pointer to by op. When found,
  * return 1 and store its score in target. Return 0 otherwise. */
 int zuiFind(zsetopsrc *op, zsetopval *val, double *score) {
@@ -2278,7 +2620,7 @@ int zuiFind(zsetopsrc *op, zsetopval *val, double *score) {
             if (zuiLongLongFromValue(val) &&
                 intsetFind(op->subject->ptr,val->ell))
             {
-                *score = 1.0;
+                *score = 1.0;//默认1.0
                 return 1;
             } else {
                 return 0;
@@ -2322,9 +2664,16 @@ int zuiFind(zsetopsrc *op, zsetopval *val, double *score) {
     }
 }
 
+/**
+ * 排序基数函数
+ * @param s1
+ * @param s2
+ * @return
+ */
 int zuiCompareByCardinality(const void *s1, const void *s2) {
     unsigned long first = zuiLength((zsetopsrc*)s1);
     unsigned long second = zuiLength((zsetopsrc*)s2);
+    //仅对比长度
     if (first > second) return 1;
     if (first < second) return -1;
     return 0;
@@ -2335,7 +2684,14 @@ int zuiCompareByCardinality(const void *s1, const void *s2) {
 #define REDIS_AGGR_MAX 3
 #define zunionInterDictValue(_e) (dictGetVal(_e) == NULL ? 1.0 : *(double*)dictGetVal(_e))
 
+/**
+ * 集合函数
+ * @param target
+ * @param val
+ * @param aggregate
+ */
 inline static void zunionInterAggregate(double *target, double val, int aggregate) {
+    //求和
     if (aggregate == REDIS_AGGR_SUM) {
         *target = *target + val;
         /* The result of adding two doubles is NaN when one variable
@@ -2343,8 +2699,10 @@ inline static void zunionInterAggregate(double *target, double val, int aggregat
          * we maintain the convention of the result being 0.0. */
         if (isnan(*target)) *target = 0.0;
     } else if (aggregate == REDIS_AGGR_MIN) {
+        //最小
         *target = val < *target ? val : *target;
     } else if (aggregate == REDIS_AGGR_MAX) {
+        //最大
         *target = val > *target ? val : *target;
     } else {
         /* safety net */
@@ -2355,6 +2713,7 @@ inline static void zunionInterAggregate(double *target, double val, int aggregat
 uint64_t dictSdsHash(const void *key);
 int dictSdsKeyCompare(void *privdata, const void *key1, const void *key2);
 
+//累加器类型的dicttype
 dictType setAccumulatorDictType = {
     dictSdsHash,               /* hash function */
     NULL,                      /* key dup */
@@ -2364,6 +2723,12 @@ dictType setAccumulatorDictType = {
     NULL                       /* val destructor */
 };
 
+/**
+ * zunion or zinter通用方法
+ * @param c
+ * @param dstkey
+ * @param op
+ */
 void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
     int i, j;
     long setnum;
@@ -2378,6 +2743,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
     int touched = 0;
 
     /* expect setnum input keys to be given */
+    //key数量
     if ((getLongFromObjectOrReply(c, c->argv[2], &setnum, NULL) != C_OK))
         return;
 
@@ -2388,6 +2754,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
     }
 
     /* test if the expected number of keys would overflow */
+    //key数量正确
     if (setnum > c->argc-3) {
         addReply(c,shared.syntaxerr);
         return;
@@ -2398,6 +2765,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
     for (i = 0, j = 3; i < setnum; i++, j++) {
         robj *obj = lookupKeyWrite(c->db,c->argv[j]);
         if (obj != NULL) {
+            //必须为set或zset类型
             if (obj->type != OBJ_ZSET && obj->type != OBJ_SET) {
                 zfree(src);
                 addReply(c,shared.wrongtypeerr);
@@ -2412,6 +2780,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
         }
 
         /* Default all weights to 1. */
+        //默认weight为1.0
         src[i].weight = 1.0;
     }
 
@@ -2420,6 +2789,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
         int remaining = c->argc - j;
 
         while (remaining) {
+            //weights参数
             if (remaining >= (setnum + 1) &&
                 !strcasecmp(c->argv[j]->ptr,"weights"))
             {
@@ -2435,6 +2805,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
             } else if (remaining >= 2 &&
                        !strcasecmp(c->argv[j]->ptr,"aggregate"))
             {
+                //aggregate参数
                 j++; remaining--;
                 if (!strcasecmp(c->argv[j]->ptr,"sum")) {
                     aggregate = REDIS_AGGR_SUM;
@@ -2458,17 +2829,21 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
 
     /* sort sets from the smallest to largest, this will improve our
      * algorithm's performance */
+    //从小到大排序
     qsort(src,setnum,sizeof(zsetopsrc),zuiCompareByCardinality);
 
+    //目标zset结构
     dstobj = createZsetObject();
     dstzset = dstobj->ptr;
     memset(&zval, 0, sizeof(zval));
 
     if (op == SET_OP_INTER) {
         /* Skip everything if the smallest input is empty. */
+        //如果最小集合为空，则差集为空
         if (zuiLength(&src[0]) > 0) {
             /* Precondition: as src[0] is non-empty and the inputs are ordered
              * by size, all src[i > 0] are non-empty too. */
+            //初始化最小集合的迭代器
             zuiInitIterator(&src[0]);
             while (zuiNext(&src[0],&zval)) {
                 double score, value;
@@ -2479,10 +2854,12 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
                 for (j = 1; j < setnum; j++) {
                     /* It is not safe to access the zset we are
                      * iterating, so explicitly check for equal object. */
+                    //同一个对象
                     if (src[j].subject == src[0].subject) {
                         value = zval.score*src[j].weight;
                         zunionInterAggregate(&score,value,aggregate);
                     } else if (zuiFind(&src[j],&zval,&value)) {
+                        //不同对象查找
                         value *= src[j].weight;
                         zunionInterAggregate(&score,value,aggregate);
                     } else {
@@ -2491,16 +2868,21 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
                 }
 
                 /* Only continue when present in every input. */
+                //所有集合都包含当前元素
                 if (j == setnum) {
                     tmp = zuiNewSdsFromValue(&zval);
+                    //插入目标集合
                     znode = zslInsert(dstzset->zsl,score,tmp);
                     dictAdd(dstzset->dict,tmp,&znode->score);
+                    //最大元素大小
                     if (sdslen(tmp) > maxelelen) maxelelen = sdslen(tmp);
                 }
             }
             zuiClearIterator(&src[0]);
         }
     } else if (op == SET_OP_UNION) {
+        //并集计算
+        //创建集合
         dict *accumulator = dictCreate(&setAccumulatorDictType,NULL);
         dictIterator *di;
         dictEntry *de, *existing;
@@ -2509,12 +2891,14 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
         if (setnum) {
             /* Our union is at least as large as the largest set.
              * Resize the dictionary ASAP to avoid useless rehashing. */
+            //最大集合的元素大小为union的最小大小
             dictExpand(accumulator,zuiLength(&src[setnum-1]));
         }
 
         /* Step 1: Create a dictionary of elements -> aggregated-scores
          * by iterating one sorted set after the other. */
         for (i = 0; i < setnum; i++) {
+            //过滤空集合
             if (zuiLength(&src[i]) == 0) continue;
 
             zuiInitIterator(&src[i]);
@@ -2527,10 +2911,12 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
                 de = dictAddRaw(accumulator,zuiSdsFromValue(&zval),&existing);
                 /* If we don't have it, we need to create a new entry. */
                 if (!existing) {
+                    //如果当前元素还不存在目标集合
                     tmp = zuiNewSdsFromValue(&zval);
                     /* Remember the longest single element encountered,
                      * to understand if it's possible to convert to ziplist
                      * at the end. */
+                    //更新元素最大大小
                      if (sdslen(tmp) > maxelelen) maxelelen = sdslen(tmp);
                     /* Update the element with its initial score. */
                     dictSetKey(accumulator, de, tmp);
@@ -2542,6 +2928,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
                      * Here we access directly the dictEntry double
                      * value inside the union as it is a big speedup
                      * compared to using the getDouble/setDouble API. */
+                    //如果元素存在目标集合，则更新score
                     zunionInterAggregate(&existing->v.d,score,aggregate);
                 }
             }
@@ -2555,6 +2942,7 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
          * let's resize the dictionary embedded inside the sorted set to the
          * right size, in order to save rehashing time. */
         dictExpand(dstzset->dict,dictSize(accumulator));
+        //临时目标集合元素，存入目标zset结构
 
         while((de = dictNext(di)) != NULL) {
             sds ele = dictGetKey(de);
@@ -2568,9 +2956,12 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
         serverPanic("Unknown operator");
     }
 
+    //删除目标key
     if (dbDelete(c->db,dstkey))
         touched = 1;
+    //如果目标zset集合长度不为空
     if (dstzset->zsl->length) {
+        //判断是否需要转换为ziplist
         zsetConvertToZiplistIfNeeded(dstobj,maxelelen);
         dbAdd(c->db,dstkey,dstobj);
         addReplyLongLong(c,zsetLength(dstobj));
@@ -2591,14 +2982,27 @@ void zunionInterGenericCommand(client *c, robj *dstkey, int op) {
     zfree(src);
 }
 
+/**
+ * zunionstore destination numkeys key [key...] [weights weight[weight]] [aggregate sum|min|max]
+ * @param c
+ */
 void zunionstoreCommand(client *c) {
     zunionInterGenericCommand(c,c->argv[1], SET_OP_UNION);
 }
 
+/**
+ * zinterstore destination numkeys key [key...] [weights weight[weight]] [aggregate sum|min|max]
+ * @param c
+ */
 void zinterstoreCommand(client *c) {
     zunionInterGenericCommand(c,c->argv[1], SET_OP_INTER);
 }
 
+/**
+ * zrange通用方法
+ * @param c
+ * @param reverse
+ */
 void zrangeGenericCommand(client *c, int reverse) {
     robj *key = c->argv[1];
     robj *zobj;
@@ -2622,6 +3026,7 @@ void zrangeGenericCommand(client *c, int reverse) {
          || checkType(c,zobj,OBJ_ZSET)) return;
 
     /* Sanitize indexes. */
+    //计算start end
     llen = zsetLength(zobj);
     if (start < 0) start = llen+start;
     if (end < 0) end = llen+end;
@@ -2644,6 +3049,7 @@ void zrangeGenericCommand(client *c, int reverse) {
     else
         addReplyArrayLen(c, rangelen);
 
+    //ziplist
     if (zobj->encoding == OBJ_ENCODING_ZIPLIST) {
         unsigned char *zl = zobj->ptr;
         unsigned char *eptr, *sptr;
@@ -2706,14 +3112,27 @@ void zrangeGenericCommand(client *c, int reverse) {
     }
 }
 
+/**
+ * zrange key start stop [withscores]
+ * @param c
+ */
 void zrangeCommand(client *c) {
     zrangeGenericCommand(c,0);
 }
 
+/**
+ * zrevrange key start stop [withscores]
+ * @param c
+ */
 void zrevrangeCommand(client *c) {
     zrangeGenericCommand(c,1);
 }
 
+/**
+ * zrangebyscore通用方法
+ * @param c
+ * @param reverse
+ */
 /* This command implements ZRANGEBYSCORE, ZREVRANGEBYSCORE. */
 void genericZrangebyscoreCommand(client *c, int reverse) {
     zrangespec range;
@@ -2725,6 +3144,7 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
     void *replylen = NULL;
     int minidx, maxidx;
 
+    //min max在argv中的索引
     /* Parse the range arguments. */
     if (reverse) {
         /* Range is given as [max,min] */
@@ -2750,6 +3170,7 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
                 pos++; remaining--;
                 withscores = 1;
             } else if (remaining >= 3 && !strcasecmp(c->argv[pos]->ptr,"limit")) {
+                //limit offset count
                 if ((getLongFromObjectOrReply(c, c->argv[pos+1], &offset, NULL)
                         != C_OK) ||
                     (getLongFromObjectOrReply(c, c->argv[pos+2], &limit, NULL)
@@ -2778,6 +3199,7 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
         double score;
 
         /* If reversed, get the last node in range as starting point. */
+        //反向，则把最后一个节点当作第一个节点
         if (reverse) {
             eptr = zzlLastInRange(zl,&range);
         } else {
@@ -2785,6 +3207,7 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
         }
 
         /* No "first" element in the specified interval. */
+        //范围内找不到，则退出
         if (eptr == NULL) {
             addReply(c,shared.emptyarray);
             return;
@@ -2801,6 +3224,7 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
 
         /* If there is an offset, just traverse the number of elements without
          * checking the score because that is done in the next loop. */
+        //移动到offset位置
         while (eptr && offset--) {
             if (reverse) {
                 zzlPrev(zl,&eptr,&sptr);
@@ -2814,8 +3238,10 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
 
             /* Abort when the node is no longer in range. */
             if (reverse) {
+                //不大于最小值，退出，不在范围内
                 if (!zslValueGteMin(score,&range)) break;
             } else {
+                //不小于最大值，退出
                 if (!zslValueLteMax(score,&range)) break;
             }
 
@@ -2900,14 +3326,26 @@ void genericZrangebyscoreCommand(client *c, int reverse) {
     setDeferredArrayLen(c, replylen, rangelen);
 }
 
+/**
+ * zrangebyscore key min max [withscores] [limit offset count]
+ * @param c
+ */
 void zrangebyscoreCommand(client *c) {
     genericZrangebyscoreCommand(c,0);
 }
 
+/**
+ * zrevrangebyscore key max min [withscores] [limit offset count]
+ * @param c
+ */
 void zrevrangebyscoreCommand(client *c) {
     genericZrangebyscoreCommand(c,1);
 }
 
+/**
+ * zcount key min max
+ * @param c
+ */
 void zcountCommand(client *c) {
     robj *key = c->argv[1];
     robj *zobj;
@@ -2941,6 +3379,7 @@ void zcountCommand(client *c) {
         /* First element is in range */
         sptr = ziplistNext(zl,eptr);
         score = zzlGetScore(sptr);
+        //第一个元素的score 小于最大值
         serverAssertWithInfo(c,zobj,zslValueLteMax(score,&range));
 
         /* Iterate over elements in range */
@@ -2948,6 +3387,7 @@ void zcountCommand(client *c) {
             score = zzlGetScore(sptr);
 
             /* Abort when the node is no longer in range. */
+            //大于最大值跳出循环
             if (!zslValueLteMax(score,&range)) {
                 break;
             } else {
@@ -2966,10 +3406,12 @@ void zcountCommand(client *c) {
 
         /* Use rank of first element, if any, to determine preliminary count */
         if (zn != NULL) {
+            //范围内第一个元素的rank
             rank = zslGetRank(zsl, zn->score, zn->ele);
             count = (zsl->length - (rank - 1));
 
             /* Find last element in range */
+            //范围内最后一个元素
             zn = zslLastInRange(zsl, &range);
 
             /* Use rank of last element, if any, to determine the actual count */
@@ -2985,6 +3427,11 @@ void zcountCommand(client *c) {
     addReplyLongLong(c, count);
 }
 
+/**
+ * zlexcount key min max
+ * value在min max之间
+ * @param c
+ */
 void zlexcountCommand(client *c) {
     robj *key = c->argv[1];
     robj *zobj;
@@ -3021,6 +3468,7 @@ void zlexcountCommand(client *c) {
 
         /* First element is in range */
         sptr = ziplistNext(zl,eptr);
+        //小于等于最大值
         serverAssertWithInfo(c,zobj,zzlLexValueLteMax(eptr,&range));
 
         /* Iterate over elements in range */
@@ -3064,6 +3512,11 @@ void zlexcountCommand(client *c) {
     addReplyLongLong(c, count);
 }
 
+/**
+ * zrangebylex 通用方法
+ * @param c
+ * @param reverse
+ */
 /* This command implements ZRANGEBYLEX, ZREVRANGEBYLEX. */
 void genericZrangebylexCommand(client *c, int reverse) {
     zlexrangespec range;
@@ -3150,6 +3603,7 @@ void genericZrangebylexCommand(client *c, int reverse) {
 
         /* If there is an offset, just traverse the number of elements without
          * checking the score because that is done in the next loop. */
+        //offset定位
         while (eptr && offset--) {
             if (reverse) {
                 zzlPrev(zl,&eptr,&sptr);
@@ -3244,10 +3698,18 @@ void genericZrangebylexCommand(client *c, int reverse) {
     setDeferredArrayLen(c, replylen, rangelen);
 }
 
+/**
+ * zrangebylex key min max [limit offset count]
+ * @param c
+ */
 void zrangebylexCommand(client *c) {
     genericZrangebylexCommand(c,0);
 }
 
+/**
+ * zrevrangebylex key max min [limit offset count]
+ * @param c
+ */
 void zrevrangebylexCommand(client *c) {
     genericZrangebylexCommand(c,1);
 }
@@ -3262,6 +3724,10 @@ void zcardCommand(client *c) {
     addReplyLongLong(c,zsetLength(zobj));
 }
 
+/**
+ * zscore key member
+ * @param c
+ */
 void zscoreCommand(client *c) {
     robj *key = c->argv[1];
     robj *zobj;
@@ -3277,6 +3743,11 @@ void zscoreCommand(client *c) {
     }
 }
 
+/**
+ * zrank 通用方法
+ * @param c
+ * @param reverse
+ */
 void zrankGenericCommand(client *c, int reverse) {
     robj *key = c->argv[1];
     robj *ele = c->argv[2];
@@ -3286,6 +3757,7 @@ void zrankGenericCommand(client *c, int reverse) {
     if ((zobj = lookupKeyReadOrReply(c,key,shared.null[c->resp])) == NULL ||
         checkType(c,zobj,OBJ_ZSET)) return;
 
+    //必须字符
     serverAssertWithInfo(c,ele,sdsEncodedObject(ele));
     rank = zsetRank(zobj,ele->ptr,reverse);
     if (rank >= 0) {
@@ -3295,10 +3767,18 @@ void zrankGenericCommand(client *c, int reverse) {
     }
 }
 
+/**
+ * zrank key member
+ * @param c
+ */
 void zrankCommand(client *c) {
     zrankGenericCommand(c, 0);
 }
 
+/**
+ * zrevrank key member
+ * @param c
+ */
 void zrevrankCommand(client *c) {
     zrankGenericCommand(c, 1);
 }
@@ -3322,6 +3802,15 @@ void zscanCommand(client *c) {
  *
  * The synchronous version instead does not need to emit the key, but may
  * use the 'count' argument to return multiple items if available. */
+/**
+ * zpop等通用方法
+ * @param c
+ * @param keyv
+ * @param keyc
+ * @param where ZSET_MAX or ZSET_MIN
+ * @param emitkey key可以使用 bzpop[min|max]阻塞多个key
+ * @param countarg zpop非阻塞版本，返回数量
+ */
 void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey, robj *countarg) {
     int idx;
     robj *key = NULL;
@@ -3331,6 +3820,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
     long count = 1;
 
     /* If a count argument as passed, parse it or return an error. */
+    //解析count参数
     if (countarg) {
         if (getLongFromObjectOrReply(c,countarg,&count,NULL) != C_OK)
             return;
@@ -3341,6 +3831,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
     }
 
     /* Check type and break on the first error, otherwise identify candidate. */
+    //检查所有key参数
     idx = 0;
     while (idx < keyc) {
         key = keyv[idx++];
@@ -3351,6 +3842,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
     }
 
     /* No candidate for zpopping, return empty. */
+    //没有可用key，返回
     if (!zobj) {
         addReply(c,shared.emptyarray);
         return;
@@ -3363,6 +3855,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
     if (emitkey) addReplyBulk(c,key);
 
     /* Remove the element. */
+    //删除元素
     do {
         if (zobj->encoding == OBJ_ENCODING_ZIPLIST) {
             unsigned char *zl = zobj->ptr;
@@ -3372,6 +3865,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
             long long vlong;
 
             /* Get the first or last element in the sorted set. */
+            //返回第一或最后一个元素
             eptr = ziplistIndex(zl,where == ZSET_MAX ? -2 : 0);
             serverAssertWithInfo(c,zobj,eptr != NULL);
             serverAssertWithInfo(c,zobj,ziplistGet(eptr,&vstr,&vlen,&vlong));
@@ -3404,6 +3898,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
         serverAssertWithInfo(c,zobj,zsetDel(zobj,ele));
         server.dirty++;
 
+        //第一次循环
         if (arraylen == 0) { /* Do this only for the first iteration. */
             char *events[2] = {"zpopmin","zpopmax"};
             notifyKeyspaceEvent(NOTIFY_ZSET,events[where],key,c->db->id);
@@ -3416,6 +3911,7 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
         arraylen += 2;
 
         /* Remove the key, if indeed needed. */
+        //key不存在元素，则删除
         if (zsetLength(zobj) == 0) {
             dbDelete(c->db,key);
             notifyKeyspaceEvent(NOTIFY_GENERIC,"del",key,c->db->id);
@@ -3426,6 +3922,10 @@ void genericZpopCommand(client *c, robj **keyv, int keyc, int where, int emitkey
     setDeferredArrayLen(c,arraylen_ptr,arraylen + (emitkey != 0));
 }
 
+/**
+ * zpopmin key [count]
+ * @param c
+ */
 /* ZPOPMIN key [<count>] */
 void zpopminCommand(client *c) {
     if (c->argc > 3) {
@@ -3436,6 +3936,10 @@ void zpopminCommand(client *c) {
         c->argc == 3 ? c->argv[2] : NULL);
 }
 
+/**
+ * zpopmax key [count]
+ * @param c
+ */
 /* ZMAXPOP key [<count>] */
 void zpopmaxCommand(client *c) {
     if (c->argc > 3) {
@@ -3464,6 +3968,7 @@ void blockingGenericZpopCommand(client *c, int where) {
             } else {
                 if (zsetLength(o) != 0) {
                     /* Non empty zset, this is like a normal ZPOP[MIN|MAX]. */
+                    //不返回key
                     genericZpopCommand(c,&c->argv[j],1,where,1,NULL);
                     /* Replicate it as an ZPOP[MIN|MAX] instead of BZPOP[MIN|MAX]. */
                     rewriteClientCommandVector(c,2,
@@ -3477,6 +3982,7 @@ void blockingGenericZpopCommand(client *c, int where) {
 
     /* If we are inside a MULTI/EXEC and the zset is empty the only thing
      * we can do is treating it as a timeout (even with timeout 0). */
+    //事务中
     if (c->flags & CLIENT_MULTI) {
         addReplyNullArray(c);
         return;
@@ -3486,11 +3992,19 @@ void blockingGenericZpopCommand(client *c, int where) {
     blockForKeys(c,BLOCKED_ZSET,c->argv + 1,c->argc - 2,timeout,NULL,NULL);
 }
 
+/**
+ * bzpopmin key [key...] timeout
+ * @param c
+ */
 // BZPOPMIN key [key ...] timeout
 void bzpopminCommand(client *c) {
     blockingGenericZpopCommand(c,ZSET_MIN);
 }
 
+/**
+ * bzpopmax key [key...] timeout
+ * @param c
+ */
 // BZPOPMAX key [key ...] timeout
 void bzpopmaxCommand(client *c) {
     blockingGenericZpopCommand(c,ZSET_MAX);
