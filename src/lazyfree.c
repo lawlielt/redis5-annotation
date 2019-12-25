@@ -51,6 +51,7 @@ size_t lazyfreeGetFreeEffort(robj *obj) {
         dict *ht = obj->ptr;
         return dictSize(ht);
     } else {
+        //其他类型编码返回1
         return 1; /* Everything else is a single allocation. */
     }
 }
@@ -118,22 +119,30 @@ int dbAsyncDelete(redisDb *db, robj *key) {
 /* Free an object, if the object is huge enough, free it in async way. */
 void freeObjAsync(robj *o) {
     size_t free_effort = lazyfreeGetFreeEffort(o);
+    //超过长度阈值 并且 refcount = 1
     if (free_effort > LAZYFREE_THRESHOLD && o->refcount == 1) {
         atomicIncr(lazyfree_objects,1);
         bioCreateBackgroundJob(BIO_LAZY_FREE,o,NULL,NULL);
     } else {
+        //引用计数-1
         decrRefCount(o);
     }
 }
 
+/**
+ * 异步清空db
+ * @param db
+ */
 /* Empty a Redis DB asynchronously. What the function does actually is to
  * create a new empty set of hash tables and scheduling the old ones for
  * lazy freeing. */
 void emptyDbAsync(redisDb *db) {
     dict *oldht1 = db->dict, *oldht2 = db->expires;
+    //清空dict和expires
     db->dict = dictCreate(&dbDictType,NULL);
     db->expires = dictCreate(&keyptrDictType,NULL);
     atomicIncr(lazyfree_objects,dictSize(oldht1));
+    //异步清空
     bioCreateBackgroundJob(BIO_LAZY_FREE,NULL,oldht1,oldht2);
 }
 
