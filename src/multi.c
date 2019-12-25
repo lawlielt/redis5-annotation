@@ -312,6 +312,7 @@ void touchWatchedKey(redisDb *db, robj *key) {
     listIter li;
     listNode *ln;
 
+    //没有watched_keys则返回
     if (dictSize(db->watched_keys) == 0) return;
     clients = dictFetchValue(db->watched_keys, key);
     if (!clients) return;
@@ -336,6 +337,7 @@ void touchWatchedKeysOnFlush(int dbid) {
     listNode *ln;
 
     /* For every client, check all the waited keys */
+    //检查所有客户端的所有watched keys
     listRewind(server.clients,&li1);
     while((ln = listNext(&li1))) {
         client *c = listNodeValue(ln);
@@ -346,7 +348,9 @@ void touchWatchedKeysOnFlush(int dbid) {
             /* For every watched key matching the specified DB, if the
              * key exists, mark the client as dirty, as the key will be
              * removed. */
+            //-1 flushall or flushdb
             if (dbid == -1 || wk->db->id == dbid) {
+                //修改客户端状态
                 if (dictFind(wk->db->dict, wk->key->ptr) != NULL)
                     c->flags |= CLIENT_DIRTY_CAS;
             }

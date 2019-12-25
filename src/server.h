@@ -715,12 +715,12 @@ typedef struct clientReplyBlock {
  * by integers from 0 (the default database) up to the max configured
  * database. The database number is the 'id' field in the structure. */
 typedef struct redisDb {
-    dict *dict;                 /* The keyspace for this DB */
-    dict *expires;              /* Timeout of keys with a timeout set */
+    dict *dict;                 /* The keyspace for this DB */ //数据库的key空间
+    dict *expires;              /* Timeout of keys with a timeout set */ //键及其过期时间
     dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP)*/ //hash结构 hash为阻塞的key，value是list结构，存储对应的client列表
     dict *ready_keys;           /* Blocked keys that received a PUSH */ //hash结构， key为对应key，value为null。主要是为了快速查询key是不是已经存在ready_keys,防止重复处理
-    dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */
-    int id;                     /* Database ID */
+    dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */ //被watch命令监控的键和相应的客户端，用于multi/exec
+    int id;                     /* Database ID */ //数据库编号
     long long avg_ttl;          /* Average TTL, just for stats */
     list *defrag_later;         /* List of key names to attempt to defrag one by one, gradually. */
 } redisDb;
@@ -890,8 +890,8 @@ typedef struct client {
     blockingState bpop;     /* blocking state */ //记录阻塞状态
     long long woff;         /* Last write global replication offset. */
     list *watched_keys;     /* Keys WATCHED for MULTI/EXEC CAS */
-    dict *pubsub_channels;  /* channels a client is interested in (SUBSCRIBE) */
-    list *pubsub_patterns;  /* patterns a client is interested in (SUBSCRIBE) */
+    dict *pubsub_channels;  /* channels a client is interested in (SUBSCRIBE) */ //pubsub频道字典 hash查找
+    list *pubsub_patterns;  /* patterns a client is interested in (SUBSCRIBE) */ //pubsub pattern列表
     sds peerid;             /* Cached peer ID. */
     listNode *client_list_node; /* list node in client list */
 
@@ -1091,7 +1091,7 @@ struct redisServer {
                                    the actual 'hz' field value if dynamic-hz
                                    is enabled. */
     int hz;                     /* serverCron() calls frequency in hertz */
-    redisDb *db;
+    redisDb *db;   //指向redis的数据库
     dict *commands;             /* Command table */
     dict *orig_commands;        /* Command table before command renaming. */
     aeEventLoop *el;
@@ -1214,7 +1214,7 @@ struct redisServer {
     int active_defrag_cycle_max;       /* maximal effort for defrag in CPU percentage */
     unsigned long active_defrag_max_scan_fields; /* maximum number of fields of set/hash/zset/list to process from within the main dict scan */
     _Atomic size_t client_max_querybuf_len; /* Limit for client query buffer length */
-    int dbnum;                      /* Total number of configured DBs */
+    int dbnum;                      /* Total number of configured DBs */ //数据库的总个数
     int supervised;                 /* 1 if supervised, 0 otherwise. */
     int supervised_mode;            /* See SUPERVISED_* */
     int daemonize;                  /* True if running as a daemon */
@@ -1404,8 +1404,8 @@ struct redisServer {
     int daylight_active;        /* Currently in daylight saving time. */
     long long mstime;           /* 'unixtime' with milliseconds resolution. */
     /* Pubsub */
-    dict *pubsub_channels;  /* Map channels to list of subscribed clients */
-    list *pubsub_patterns;  /* A list of pubsub_patterns */
+    dict *pubsub_channels;  /* Map channels to list of subscribed clients */ //channels和订阅channel的客户端列表
+    list *pubsub_patterns;  /* A list of pubsub_patterns */ //正则订阅模式列表
     int notify_keyspace_events; /* Events to propagate via Pub/Sub. This is an
                                    xor of NOTIFY_... flags. */
     /* Cluster */
@@ -1449,7 +1449,7 @@ struct redisServer {
     /* Lazy free */
     int lazyfree_lazy_eviction;
     int lazyfree_lazy_expire;
-    int lazyfree_lazy_server_del;
+    int lazyfree_lazy_server_del; //懒删除
     /* Latency monitor */
     long long latency_monitor_threshold;
     dict *latency_events;
@@ -1470,8 +1470,11 @@ struct redisServer {
     redisTLSContextConfig tls_ctx_config;
 };
 
+/**
+ * pubsub模式串结构体
+ */
 typedef struct pubsubPattern {
-    client *client;
+    client *client; //指向客户端
     robj *pattern;
 } pubsubPattern;
 
